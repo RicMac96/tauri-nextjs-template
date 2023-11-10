@@ -7,7 +7,7 @@
     "distDir": "../out"
   },
   "package": {
-    "productName": "tauri-nextjs-template",
+    "productName": "opaux",
     "version": "0.1.0"
   },
   "tauri": {
@@ -17,14 +17,14 @@
     "bundle": {
       "active": true,
       "category": "DeveloperTool",
-      "copyright": "",
+      "copyright": "Ricardo Macio",
       "deb": {
         "depends": []
       },
       "externalBin": [],
       "icon": ["icons/favicon.ico"],
       "identifier": "opaux",
-      "longDescription": "",
+      "longDescription": "Database of procedures and events ocurred",
       "macOS": {
         "entitlements": null,
         "exceptionDomain": "",
@@ -33,7 +33,7 @@
         "signingIdentity": null
       },
       "resources": [],
-      "shortDescription": "",
+      "shortDescription": "Database of procedures and events ocurred",
       "targets": "all",
       "windows": {
         "certificateThumbprint": null,
@@ -54,7 +54,8 @@
         "title": "OpAux",
         "width": 1280,
         "height": 800,
-        "alwaysOnTop": true
+        "alwaysOnTop": false,
+        "center": true
       }
     ]
   }

@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import mongoose from "mongoose"
+import Windfarm from "./windfarm.model"
 
 const reportSchema = new mongoose.Schema(
   {
