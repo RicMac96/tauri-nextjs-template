@@ -15,7 +15,7 @@ const Index = ({ params }: { params: { id: string } }) => {
   const [windfarmList, setWindfarmList] = useState<WindfarmType[] | undefined>()
   const [report, setReport] = useState<ReportType | undefined>()
   useEffect(() => {
-    async function load() {
+    async function getValues() {
       try {
         const data = await getWindfarms()
         setWindfarmList(data)
@@ -25,8 +25,11 @@ const Index = ({ params }: { params: { id: string } }) => {
         console.log("error")
       }
     }
-    load()
+    getValues()
   }, [params.id])
+  if (!windfarmList && !report) {
+    return <div>Loading</div>
+  }
   return (
     <ReportForm
       windfarmList={windfarmList}

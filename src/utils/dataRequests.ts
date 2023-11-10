@@ -30,7 +30,7 @@ const getReport = async (id: string) => {
   return await response.json()
 }
 
-const getWindfarms = async (): Promise<WindfarmType[]> => {
+const getWindfarms = async () => {
   const response = await fetch(`${BACKEND_URL}/api/getWindfarms`, {
     cache: "force-cache",
   })
