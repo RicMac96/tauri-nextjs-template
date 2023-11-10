@@ -16,11 +16,21 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@fortawesome/free-solid-svg-icons": "^6.4.2",
+    "@fortawesome/react-fontawesome": "^0.2.0",
+    "@mui/material": "^5.14.5",
+    "@mui/styled-engine-sc": "^5.12.0",
     "@tauri-apps/api": "^1.5.1",
     "clsx": "^2.0.0",
+    "mongodb": "^4.8.1",
+    "mongodb-client-encryption": "^2.9.0",
+    "mongoose": "^8.0.0",
     "next": "^14.0.1",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-hook-form": "^7.48.2"
   },
   "devDependencies": {
     "@prettier/plugin-xml": "^3.2.2",
@@ -43,6 +53,8 @@
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.1",
     "eslint-plugin-simple-import-sort": "^10.0.0",
+    "eslint-plugin-tailwindcss": "^3.13.0",
+    "eslint-plugin-unused-imports": "^3.0.0",
     "husky": "^8.0.3",
     "lint-staged": "^15.0.2",
     "postcss": "^8.4.31",

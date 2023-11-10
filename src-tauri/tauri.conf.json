@@ -22,14 +22,8 @@
         "depends": []
       },
       "externalBin": [],
-      "icon": [
-        "icons/32x32.png",
-        "icons/128x128.png",
-        "icons/128x128@2x.png",
-        "icons/icon.icns",
-        "icons/icon.ico"
-      ],
-      "identifier": "com.tauri.dev",
+      "icon": ["icons/favicon.ico"],
+      "identifier": "opaux",
       "longDescription": "",
       "macOS": {
         "entitlements": null,
@@ -57,9 +51,10 @@
       {
         "fullscreen": false,
         "resizable": true,
-        "title": "Tauri NextJS App",
+        "title": "OpAux",
         "width": 1280,
-        "height": 800
+        "height": 800,
+        "alwaysOnTop": true
       }
     ]
   }

@@ -17,8 +17,21 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]
-    }
+    },
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "*.js"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "*.js",
+    ".next/types/**/*.ts",
+    ".lib/*",
+    ".models/*"
+  ],
   "exclude": ["node_modules", "src-tauri"]
 }

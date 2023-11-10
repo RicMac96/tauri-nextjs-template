@@ -1,0 +1,2584 @@
+const list = [
+	{ alarm:'1', alarm_2:'1', alarmCode='Program start PLC'
+		, description:'New start of the PLC after reboot. Automatic reset only after long grid loss', 
+		reset:'Auto, Local, Remote'
+		, remoteOperation:'N/A'
+	},
+	
+	{ alarm:'2', alarm_2:'2', alarmCode='No Errors',
+		description:'The WTG is ready for operation again after a fault', 
+		reset:'Auto'
+		, remoteOperation:'N/A'
+	},
+	
+	{ alarm:'3', alarm_2:'3', alarmCode='Manual Stop',
+		 description:'The WTG was stopped with the key function at the control box in the tower base or at the top cabinet in the nacelle', 
+		reset:'Local, Remote',
+		, remoteOperation:'N/A'
+	},
+	
+	{ alarm:'4', alarm_2:'4', alarmCode='Remote Stop',
+		, description:'The WTG was stopped by the remote control system', 
+		reset:'Local, Remote'
+		, remoteOperation:'N/A'
+	},
+	
+	{ alarm:'5', alarm_2:'5', alarmCode='Remote Start',
+		, description:'The WTG is started by the remote control system', 
+		reset:'Auto'
+		, remoteOperation:'N/A'
+	},
+	
+	{ alarm:'6', alarm_2:'6', alarmCode='System OK',
+		, description:'This message will appear, if the system is working without faults', 
+		reset:'Auto'
+		, remoteOperation:'N/A'
+	},
+	
+	{ alarm:'7', alarm_2:'7', alarmCode='Storm shutdown',
+		, description:'At wind speeds higher than the corresponding adjusted parameter,	the WTG switches off and waits until the wind speed slows down again. The WTG restarts automatically', 
+		reset:'Auto, Local, Remote'
+		, remoteOperation:'N/A'
+	},
+	
+	{ alarm:'8', alarm_2:'8', alarmCode='Overvoltage',
+		, description:'The line voltage has risen over a predefined limit, in a single phase at least', 
+		reset:'Auto, Local, Remote'
+		, remoteOperation:'Wait 15 min if doesn t restart call O&amp;M/ Call O&amp;M'
+	},
+	
+	{ alarm:'9', alarm_2:'9', alarmCode='Undervoltage',
+		, description:'The line voltage has dropped below a predefined limit, in a single phase at least', 
+		reset:'Auto, Local, Remote'
+		, remoteOperation:'Wait 15 min if doesn t restart call O&amp;M/ Call O&amp;M'
+	},
+	
+	{ alarm:'13', alarm_2:'13', alarmCode='Asymmetric generator current',
+		, description:'In case of asymmetric phase currents, the generator is disconnected from the grid.	Generator damage is possible.', 
+		reset:'Local, Remote'
+		, remoteOperation:'Call O&amp;M'
+	},
+	
+	{ alarm:'14', alarm_2:'14', alarmCode='Generator overspeed',
+		, description:'The generator speed is monitored according to a limit. The WTG is braked when this limit has been exceeded', 
+		reset:'Local, Remote'
+		, remoteOperation:'2 remote resets. wait 30 min between resets. If it stops again, local reset'
+	},
+	
+	{ alarm:'15', alarm_2:'15', alarmCode='Rotor overspeed',
+		, description:'The rotor speed is monitored according to a limit. The WTG is braked when this limit has been exceeded', 
+		reset:'Local, Remote'
+		, remoteOperation:'2 remote resets. wait 30 min between resets. If it stops again, local reset'
+	},
+	
+	{ alarm:'16', alarm_2:'16', alarmCode='Speed detector at the rotor side',
+		, description:'The computer-independent overspeed relay has been triggered because of a rotor overspeed so that the safety chain is interrupted.', 
+		reset:'Local, Remote'
+		, remoteOperation:'2 remote resets. wait 30 min between resets. If it stops again, local reset'
+	},
+	
+	{ alarm:'17', alarmCode='Centrifugal switch',
+		, description:'The centrifugal switch at the generator shaft has recognized an overspeed and has triggered the safety chain', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},
+	
+	{ alarm:'18', alarm_2:'18', alarmCode='Overproduction',
+		, description:'If the generator output is higher than the max. permissible output, the WTG is stopped', 
+		reset:'Unknown',
+		, remoteOperation:'Unknown'
+	},
+	
+	{ alarm:'19', alarm_2:'19', alarmCode='Maximum motor power',
+		, description:'The generator is motor driven and has taken up too high an
+		input from the line', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},
+
+	{ alarm:'20', alarm_2:'20', alarmCode='Cable twisting right',
+		, description:'The nacelle has reached the position pre-stop or rewinding.
+		Rewinding is carried out automatically by reversing the machine head to
+		prevent a shear-off of the cables', 
+		reset:'Auto, Local, Remote'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'21', alarm_2:'21', alarmCode='Cable twisting left',
+		, description:'The nacelle has reached the position pre-stop or rewinding.
+		Rewinding is carried out automatically by reversing the machine head to
+		prevent a shear-off of the cables', 
+		reset:'Auto, Local, Remote'
+		, remoteOperation:'N/A'
+	},
+	
+	{ alarm:'22', alarm_2:'22', alarmCode='Yaw drive stop position',
+		, description:'This status message is triggered when the value specified in the counter for the yaw position is exceeded', 
+		reset:'auto'
+		, remoteOperation:'N/A'
+	},
+	
+	{ alarm:'23', alarm_2:'23', alarmCode='Excessive output peak value',
+		, description:'The power output averaged over the configurable time period exceeds the peak value', 
+		reset:'Auto, Local, Remote'
+		, remoteOperation:'3 remote resets. If doesn't restart call O&amp;M'
+	},
+	
+	{ alarm:'24', alarm_2:'24', alarmCode='Primary braking time too high',
+		, description:'Too much time is required to reach the feathering position', 
+		reset:'Local, Remote'
+		, remoteOperation:'remote reset. Check other active alarms'
+	},	
+	
+	{ alarm:'25', alarm_2:'25', alarmCode='No reduction of speed when braking with primary brake',
+		, description:'No speed reduction with braking types 3-5 after the first 5 sec for linear
+		pitch profile and 7 sec for triple pitch profile (additional 4s are added to this time 
+		if torque gradient drops below (P4.1/1500kW) * -3000 Nm/s during braking). 
+		Afterwards the speed is checked every 0.5 sec, whether it is still decreasing. 
+		Monitoring is disabled if speed drops below 300 rpm', 
+		reset:'Local, Remote'
+		, remoteOperation:'remote reset. Check other active alarms'
+	},
+	
+	{ alarm:'27', alarm_2:'27', alarmCode='Secondary braking time too high',
+		, description:'Monitoring the secondary brake: braking time exceeds the standard time', 
+		reset:'Local, Remote'
+		, remoteOperation:'remote reset. Check other active alarms'
+	},
+	
+	{ alarm:'28', alarm_2:'28', alarmCode='No speed reduction with secondary braking',
+		, description:'The variation of speed is monitored when braking. If the speed does not decrease over 
+		a particular period of time or if the speed increases, this fault is triggered.', 
+		reset:'Local, Remote'
+		, remoteOperation:'remote reset. Check other active alarms'
+	},	
+	
+	{ alarm:'31', alarm_2:'31', alarmCode='Timeout yaw counter',
+		, description:'In spite of the turned yaw system there is no change of signal 
+		at the entry of the yaw counter', 
+		reset:'Local, Remote'
+		, remoteOperation:'1 remote reset.  If doesn't restart call O&amp;M'
+	},
+
+	{ alarm:'34', alarm_2:'34', alarmCode='Brake not released secondary brake',
+		, description:'After a period P9.6 following release of the brake, the brake is 
+		not released for a period P9.7 (DI12.25=1)', 
+		reset:'Local, Remote'
+		, remoteOperation:'remote reset. Check other active alarms'
+	},
+
+	{ alarm:'35', alarm_2:'35', alarmCode='Emergency stop tower base / container',
+		, description:'The emergency stop switch at the switch cabinet in the tower base has been pressed', 
+		reset:'Local, Remote'
+		, remoteOperation:'Call O&amp;M'
+	},
+
+	{ alarm:'36', alarm_2:'36', alarmCode='Speed with braked turbine',
+		, description:'After using the secondary brake and after expiry of a predefined time, 
+		speed was measured on one of the three speed recordings', 
+		reset:'Local, Remote'
+		, remoteOperation:'Call O&amp;M'
+	},
+
+	{ alarm:'37"  nombreAlarma="Primary brake test',
+		, description:'Flushing procedure of hydraulic', 
+		reset:'Auto, Local, Remote'
+		, remoteOperation:'N/A'
+	},
+
+	{ alarm:'38', alarm_2:'38', alarmCode='Secondary brake test',
+		, description:'If the plant has not been braked over a period of 1400 h, the 
+		secondary brake is tested. After a successful test, the WTG is restarted automatically', 
+		reset:'Auto, Local, Remote'
+		, remoteOperation:'N/A'
+	},
+
+	{ alarm:'41', alarm_2:'41', alarmCode='Vibrations detector defect',
+		, description:'Vibration monitoring device for tower/generator base signals are defective. 
+		Vibrations cannot be detected any more', 
+		reset:'Local, Remote'
+		, remoteOperation:'remote reset. Check other active alarms'
+	},
+
+	{ alarm:'42', alarm_2:'42', alarmCode='Wrong yaw direction of rotation',
+		, description:'Yaw rotates in the wrong direction. Yaw is blocked', 
+		reset:'Auto (if enabled via parameter), Local, Remote'
+		, remoteOperation:'3 remote resets. If doesn't restart call O&amp;M'
+	},
+
+	{ alarm:'45', alarm_2:'45', alarmCode='Hydraulic pump time too high',
+		, description:'The hydraulic pump needs too much time to build up the system pressure', 
+		reset:'Local, Remote'
+		, remoteOperation:'3 remote resets. If doesn't restart call O&amp;M'
+	},
+
+	{ alarm:'46', alarm_2:'46', alarmCode='Hydraulic pump time too low',
+		, description:'The hydraulic pump time is too short (for GE1.5 the pump interval time is too short). 
+		It is suspected that the hydraulic accumulator is defective.', 
+		reset:'Auto, Local, Remote'
+		, remoteOperation:'3 remote resets. If doesn't restart call O&amp;M'
+	},
+
+	{ alarm:'47', alarm_2:'47', alarmCode='Service switch hydraulic top cabinet',
+		, description:'The service switch for the hydraulic unit was activated, i.e. 
+		the hydraulic system is unable to build up the system pressure again', 
+		reset:'Local, Remote'
+		, remoteOperation:'N/A'
+	},
+
+	{ alarm:'51', alarm_2:'51', alarmCode='Gearbox oil level too low',
+		, description:'The level switch of the gear box has triggered', 
+		reset:'Auto, Local, Remote'
+		, remoteOperation:'1 remote reset.  If doesn't restart call O&amp;M. Check ambient conditions'
+	},	
+	
+	{ alarm:'52', alarm_2:'52', alarmCode='Gearbox oil pressure too low',
+		, description:'The pressure switch of the gear box has triggered', 
+		reset:'Local, Remote'
+		, remoteOperation:'3 remote reset.  If doesn't restart call O&amp;M. Check ambient conditions'
+	},
+	
+	{ alarm:'53', alarm_2:'53', alarmCode='Wind vane defect',
+		, description:'After a 200  yawing, no signal change of the centre signal has
+		been noticed by the wind vane.', 
+		reset:'Auto, Local, Remote'
+		, remoteOperation:'3 remote reset.  If doesn't restart call O&amp;M. Check ambient conditions'
+	},
+	
+	{ alarm:'54', alarm_2:'54', alarmCode='Anemometer defect',
+		, description:'The generator output is disproportionate to the measured wind speed, i. e. 
+		the measured wind speed is too low for the corresponding output value of the output curve', 
+		reset:'Auto, Local, Remote'
+		, remoteOperation:'3 remote reset.  If doesn't restart call O&amp;M. Check ambient conditions'
+	},
+	
+	{ alarm:'55', alarm_2:'55', alarmCode='Rotor impulse sensor defect',
+		, description:'Generator speed: Pulses available from the inductive proximity switch.
+		Rotor speed: No pulses from the inductive proximity switch', 
+		reset:'Local, Remote'
+		, remoteOperation:'3 remote reset.  If doesn't restart call O&amp;M. Check ambient conditions'
+	},
+	
+	{ alarm:'56', alarm_2:'56', alarmCode='Generator impulse sensor defect',
+		, description:'Rotor speed: Impulse of the inductive approximation switch available. 
+		Generator speed: No impulse of the inductive approximation switch', 
+		reset:'Local, Remote'
+		, remoteOperation:'3 remote reset.  If doesn't restart call O&amp;M. Check ambient conditions'
+	},
+	
+	{ alarm:'57', alarm_2:'57', alarmCode='Ratio generator/rotor speed',
+		, description:'Rotor speed and generator speed are disproportionate', 
+		reset:'Local, Remote'
+		, remoteOperation:'By security alert, it temporarily becomes a LOCAL RESET. No remote reset is allowed. 
+		(Previous instruction when the safety alert was not active: 
+		3 remote reset. If doesn't restart call O&amp;M. Check ambient conditions)'
+	},
+	
+	{ alarm:'58', alarm_2:'58', alarmCode='Demand to stop by an external device',
+		, description:'An external device has requested a stop of the WTG', 
+		reset:'Auto'
+		, remoteOperation:'N/A Power restriction / 1 remote reset.  If doesn't restart call O&amp;M'
+	},
+	
+	{ alarm:'59', alarm_2:'59', alarmCode='Vibration switch',
+		, description:'Vibrations in the nacelle have activated the vibration switch. The safety chain is interrupted', 
+		reset:'Local, Remote'
+		, remoteOperation:'Call O&amp;M'
+	},
+	
+	{ alarm:'60', alarm_2:'60', alarmCode='Yaw limit switch activated',
+		, description:'Twisted cables have activated the cable twisting pull switch', 
+		reset:'Local, Remote'
+		, remoteOperation:'Call O&amp;M'
+	},
+	
+	{ alarm:'61', alarm_2:'61', alarmCode='Buffer battery PLC',
+		, description:'The storage battery for the RAM-storage for the parameters and statistics is empty', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},
+	
+	{ alarm:'62', alarm_2:'62', alarmCode='PLC fault collection',
+		, description:'Failure of the optical fibre FastBus to the top box', 
+		reset:'Local, Remote'
+		, remoteOperation:'Call O&amp;M'
+	},
+	
+	{ alarm:'63', alarm_2:'63', alarmCode='Safety chain',
+		, description:'The safety chain has been released', 
+		reset:'Local, Remote'
+		, remoteOperation:'Call O&amp;M'
+	},
+	
+	{ alarm:'64', alarm_2:'64', alarmCode='Motor protection',
+		, description:'Monitoring of the motor protection switch in the main cabinet has been released', 
+		reset:'Local, Remote'
+		, remoteOperation:'Call O&amp;M'
+	},
+	
+	{ alarm:'65', alarm_2:'65', alarmCode='Main switch released',
+		, description:'The help contact of the switch carries the "1" signal. The power
+		switch for the stator winding of the generator is triggered', 
+		reset:'Local'
+		, remoteOperation:'Call O&amp;M'
+	},
+	
+	{ alarm:'71', alarm_2:'71', alarmCode='Gearbox oil filter dirty (shut-down)',
+		, description:'The PLC has registered a filter malfunction in the gear box
+		and switches off the plant', 
+		reset:'Local, Remote'
+		, remoteOperation:'Call O&amp;M'
+	},
+	
+	{ alarm:'72', alarm_2:'72', alarmCode='Gearbox oil temperature switching contact',
+		, description:'The overtemperature control of the temperature switch KPS79
+		in the gear box oil sump has taken effect at 60 C', 
+		reset:'Local, Remote'
+		, remoteOperation:'Call O&amp;M'
+	},
+	
+	{ alarm:'75', alarm_2:'75', alarmCode='Generator bearing A overtemperature',
+		, description:'The temperature at the temperature sensor (PT100) of generator
+		bearing A has risen above the limit value', 
+		reset:'Auto, Local, Remote'
+		, remoteOperation:'5 auto? Check temperature before 1 remote reset'
+	},
+	
+	{ alarm:'76', alarm_2:'76', alarmCode='Generator bearing B overtemperature',
+		, description:'The temperature at the temperature sensor (PT100) of generator
+		bearing B has risen over the limit value', 
+		reset:'Auto, Local, Remote'
+		, remoteOperation:'5 auto? Check temperature before 1 remote reset'
+	},
+	
+	{ alarm:'77', alarm_2:'77', alarmCode='Gearbox oil overtemperature',
+		, description:'The gear box oil temperature is higher than the maximum permissible value.
+		This is monitored by PT100 in the gear box', 
+		reset:'Auto, Local, Remote'
+		, remoteOperation:'5 auto? Check temperature before 1 remote reset'
+	},
+	
+	{ alarm:'78', alarm_2:'78', alarmCode='Outside temperature too low',
+		, description:'The outside temperature is too low. To avoid damage to the steel tower 
+		by embitterment, the WTG will operate in the feathering position', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},
+	
+	{ alarm:'81', alarm_2:'81', alarmCode='Shaft bearing overtemperature',
+		, description:'The temperature on the temperature sensor (PT100) for the 
+		shaft bearing has exceeded the limit temperature', 
+		reset:'Auto, Local, Remote'
+		, remoteOperation:'Call O&amp;M'
+	},
+	
+	{ alarm:'82', alarm_2:'82', alarmCode='Yaw motor overtemperature',
+		, description:'1 of the 3 PTC temperature sensors on the yaw motors reports
+		excessive temperature (> 155  C)', 
+		reset:'Auto, Local, Remote'
+		, remoteOperation:'1 remote reset.  If doesn't restart call O&amp;M'
+	},
+	
+	{ alarm:'83', alarm_2:'83', alarmCode='Gearbox bearing B overtemperature',
+		, description:'The gear box bearing B temperature, measured with the PT100-resistance,
+		is higher than the parameter value (offshore only)', 
+		reset:'Auto, Local, Remote'
+		, remoteOperation:'5 auto? Check temperature before 1 remote reset'
+	},
+	
+	{ alarm:'84', alarm_2:'84', alarmCode='Gearbox oil temperature too low',
+		, description:'Min. temperature of gearbox oil sump and bearings below P13.7 for 10 
+		minutes. Restart: temperature equal to or above P13.7 for 10 minutes', 
+		reset:'Auto, Local, Remote'
+		, remoteOperation:'5 auto? Check temperature before 1 remote reset'
+	},
+	
+	{ alarm:'86', alarm_2:'86', alarmCode='Braking pad of secondary brake worn out',
+		, description:'The braking pad of the secondary brake is worn out', 
+		reset:'Local, Remote'
+		, remoteOperation:'N/A'
+	},
+	
+	{ alarm:'87', alarm_2:'87', alarmCode='Restart time delay',
+		, description:'The starting time delay runs, e. g. following a grid failure, after an
+		overtemperature or after a storm shutdown. The WTG is not run up again until this delay time has elapsed', 
+		reset:'Auto, Local, Remote'
+		, remoteOperation:'N/A'
+	},
+	
+	{ alarm:'88', alarm_2:'88', alarmCode='Multiple overtemperature switch off',
+		, description:'The max. permissible temperatures at which the plant may run were 
+		repeatedly exceeded within 24 hours after the last fault reset', 
+		reset:'Local, Remote'
+		, remoteOperation:'Call O&amp;M'
+	},
+	
+	{ alarm:'89', alarm_2:'89', alarmCode='Gearbox oil filter dirty (warning)',
+		, description:'The gear box oil filter is dirty (the fine filter for the GE 1.5)', 
+		reset:'Local, Remote'
+		, remoteOperation:'N/A'
+	},
+	
+	{ alarm:'91', alarm_2:'91', alarmCode='Gearbox running hot in low generator stage',
+		, description:'Power reduction because the gear box temperature is too low', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},
+	
+	{ alarm:'94', alarm_2:'94', alarmCode='Control call',
+		, description:'The status message "control call" is set off via modem. 
+		This status message can be activated by a parameter or is set by turning
+		the service switch to normal operation', 
+		reset:'Auto, Local, Remote'
+		, remoteOperation:'N/A'
+	},
+	
+	{ alarm:'95', alarm_2:'95', alarmCode='PC restart',
+		, description:'Data has to be permanently exchanged via the plant PC and the PLC. 
+		If this exchange of data does not take place any more, the plant PC is rebooted via PLC', 
+		reset:'Auto, Local, Remote'
+		, remoteOperation:'N/A'
+	},
+	
+	{ alarm:'96"  nombreAlarma="Slip ring device overtemperature',
+		, description:'', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},
+	
+	{ alarm:'97', alarm_2:'97', alarmCode='Generator cooling air overtemperature',
+		, description:'The temperature at the temperature sensor (PT100) of the generator
+		cooling air has risen above the limit value', 
+		reset:'Auto, Local, Remote'
+		, remoteOperation:'5 auto? Check temperature before 1 remote reset'
+	},
+	
+	{ alarm:'98', alarm_2:'98', alarmCode='Gearbox bearing overtemperature',
+		, description:'The gear box bearing temperature, measured with the PT100-resistance, 
+		exceeds the parameter value.', 
+		reset:'Auto, Local, Remote'
+		, remoteOperation:'5 auto? Check temperature before 1 remote reset'
+	},
+	
+	{ alarm:'99', alarm_2:'99', alarmCode='Generator overtemperature 1',
+		, description:'Temperature sensor 1 of the generator winding exceeds the temperature limit', 
+		reset:'Auto, Local, Remote'
+		, remoteOperation:'5 auto? Check temperature before 1 remote reset'
+	},
+	
+	{ alarm:'100', alarm_2:'100', alarmCode='Generator overtemperature 2',
+		, description:'The temperature at the temperature sensor 2 (PT100) of the generator
+		winding has risen above the limit value', 
+		reset:'Auto, Local, Remote'
+		, remoteOperation:'5 auto? Check temperature before 1 remote reset'
+	},
+	
+	{ alarm:'101', alarm_2:'101', alarmCode='Motor protection fuses',
+		, description:'The 24 V DC-fuses have been triggered.', 
+		reset:'Local, Remote'
+		, remoteOperation:'Call O&amp;M'
+	},	
+	
+	{ alarm:'102', alarm_2:'102', alarmCode='Motor protection top cabinet',
+		, description:'Monitoring of the motor protection switch of the auxiliary aggregate (motors, fans, pumps)
+		in the nacelle has been triggered.', 
+		reset:'Local, Remote'
+		, remoteOperation:'Call O&amp;M'
+	},	
+	
+	{ alarm:'103', alarm_2:'103', alarmCode='Generator overtemperature relay contact',
+		, description:'The temperature at temperature sensor 3 (PT100) of the generator winding has risen 
+		above the limit value.', 
+		reset:'Auto, Local, Remote'
+		, remoteOperation:'5 auto? Check temperature before 1 remote reset.'
+	},	
+	
+	{ alarm:'105', alarm_2:'105', alarmCode='Generator side CCU fault voltage',
+		, description:'The frequency converter on the generator side has a fault. An inadmissibly high or 
+		low voltage has been noticed in the frequency converter. Several measuring points in the equipment are monitored.', 
+		reset:'Auto, Local, Remote'
+		, remoteOperation:'3 remote reset.  If doesn t restart call O&amp;M. '
+	},	
+	
+	{ alarm:'106', alarm_2:'106', alarmCode='Generator side CCU fault current',
+		, description:'The frequency converter on the generator side has a fault. An inadmissibly high current has been 
+		noticed in the frequency converter. Several measuring points in the equipment are monitored.', 
+		reset:'Auto, Local, Remote'
+		, remoteOperation:'3 remote reset.  If doesn t restart call O&amp;M. '
+	},	
+	
+	{ alarm:'107', alarm_2:'107', alarmCode='Generator side CCU fault temperature',
+		, description:'The frequency converter on the generator side has a fault. An inadmissibly high temperature has been 
+		noticed in the frequency converter. Several measuring points in the equipment are monitored.', 
+		reset:'Auto, Local, Remote'
+		, remoteOperation:'3 remote reset.  If doesn t restart call O&amp;M. '
+	},	
+	
+	{ alarm:'108', alarm_2:'108', alarmCode='Rotor locking',
+		, description:'At least one of the two pins of the rotor lock has been operated manually. This releases the safety chain.', 
+		reset:'Local, Remote'
+		, remoteOperation:'Call O&amp;M'
+	},	
+	
+	{ alarm:'109"  nombreAlarma="Generator carbon dust filter dirty',
+		, description:'The generator's activated carbon filter is dirty.', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'110', alarm_2:'110', alarmCode='Speed in the tower resonance range',
+		, description:'The generator speed falls in a range in which a tower resonance can appear for a configurable time.', 
+		reset:'Auto, Local, Remote'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'112', alarm_2:'112', alarmCode='Feedback signal from CCU',
+		, description:'The frequency converter has been actuated with the request: Switch on the frequency converter, 
+		but after a reaction time of 65 seconds there has still been no response signal from the frequency converter: 
+		Frequency converter in operation. If the converter is switched off (actuate frequency converters off) and there 
+		is no signal: Frequency converter on. The status message is carried out after expiry of the reaction time.', 
+		reset:'Auto, Local, Remote'
+		, remoteOperation:'No limit remote resets.'
+	},	
+	
+	{ alarm:'113', alarm_2:'113', alarmCode='Line CCU fault voltage',
+		, description:'The frequency converter on the line side has a fault. An inadmissibly high or low tension has been noticed in the frequency converter.
+		Several measuring points in the equipment are monitored.', 
+		reset:'Auto, Local, Remote'
+		, remoteOperation:'3 remote reset.  If doesn t restart call O&amp;M. '
+	},	
+	
+	{ alarm:'114', alarm_2:'114', alarmCode='Line CCU fault current',
+		, description:'The frequency converter on the line side has a fault. An inadmissibly high current has been noticed in the frequency converter. 
+		Several measuring points in the equipment are monitored.', 
+		reset:'Auto, Local, Remote'
+		, remoteOperation:'3 remote reset.  If doesn t restart call O&amp;M. '
+	},	
+	
+	{ alarm:'115', alarm_2:'115', alarmCode='Line CCU fault temperature',
+		, description:'The frequency converter on the line side has a fault. An inadmissibly high temperature has been noticed in the frequency converter.
+		Several measuring points in the equipment are monitored.', 
+		reset:'Auto, Local, Remote'
+		, remoteOperation:'3 remote reset.  If doesn t restart call O&amp;M. '
+	},	
+	
+	{ alarm:'116', alarm_2:'116', alarmCode='Line fault voltage',
+		, description:'The line voltage at the terminals of the voltage-monitoring module has at least in a single phase exceeded or 
+		fallen below a predefined limit.', 
+		reset:'Auto, Local, Remote'
+		, remoteOperation:'3 remote reset.  If doesn t restart call O&amp;M. Check voltage value. Be carefull possible robbery.'
+	},	
+	
+	{ alarm:'117', alarm_2:'117', alarmCode='Line fault frequency',
+		, description:'The line frequency at the terminals of the frequency-monitoring module has at least in a single phase 
+		exceeded or fallen below a predefined limit.', 
+		reset:'Auto, Local, Remote'
+		, remoteOperation:'3 remote reset.  If doesn t restart call O&amp;M. '
+	},	
+	
+	{ alarm:'118', alarm_2:'118', alarmCode='Emergency stop nacelle / hub',
+		, description:'The EMERGENCY STOP switch on the top cabinet in the nacelle or in the hub has been pressed.', 
+		reset:'Local, Remote'
+		, remoteOperation:'Call O&amp;M'
+	},	
+	
+	{ alarm:'119', alarm_2:'119', alarmCode='Time-out pitch controller',
+		, description:'Communication between the pitch controller and the PLC is disturbed.', 
+		reset:'Auto, Local, Remote'
+		, remoteOperation:'3 remote reset.  If doesn't restart call O&amp;M '
+	},	
+	
+	{ alarm:'120', alarm_2:'120', alarmCode='Communication fault pitch controller',
+		, description:'Communication between the pitch controller and the PLC is interrupted', 
+		reset:'Local, Remote'
+		, remoteOperation:'3 remote reset.  If doesn't restart call O&amp;M. '
+	},	
+	
+	{ alarm:'121', alarm_2:'121', alarmCode='Axis 1 fault pitch controller',
+		, description:'GE 1.5: The axis control on the rotor blade controller has recognized an internal fault, e.g. tracking error axis 1.', 
+		reset:'Auto, Local, Remote'
+		, remoteOperation:'3 remote reset.  If doesn't restart call O&amp;M. '
+	},	
+	
+	{ alarm:'122', alarm_2:'122', alarmCode='Collective fault pitch controller',
+		, description:'The rotor blade controller has recognized a fault.', 
+		reset:'Auto, Local, Remote'
+		, remoteOperation:'3 remote reset.  If doesn't restart call O&amp;M. '
+	},	
+	
+	{ alarm:'123"  nombreAlarma="Gearbox cooler switching contact',
+		, description:'The temperature monitoring of the temperature switch KPS79 at the oil distributor has triggered at 75 C.', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'124', alarm_2:'124', alarmCode='Pitch Overrun 0 ',
+		, description:'The stop switch for the 0 -position of the feathering blades has been crossed.', 
+		reset:'Local, Remote'
+		, remoteOperation:'3 remote reset.  If doesn't restart call O&amp;M. '
+	},	
+	
+	{ alarm:'125', alarm_2:'125', alarmCode='Pitch Overrun 90 ',
+		, description:'The stop switch for the 90 -position of the feathering blades has been crossed.', 
+		reset:'Local, Remote'
+		, remoteOperation:'3 remote reset.  If doesn't restart call O&amp;M. '
+	},	
+	
+	{ alarm:'126', alarmCode='Yaw soft start fault',
+		, description:'The thyristor soft start for the yaw drive has a malfunction (0-signal at the PLC-input).', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'127', alarm_2:'127', alarmCode='Generator power switch',
+		, description:'Number of cut-ins of synchronization switch exceeds max. number at which the switch contacts should be checked.', 
+		reset:'Local, Remote'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'128"  nombreAlarma="Switch of the PLC on memory-reset',
+		, description:'', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'129', alarm_2:'129', alarmCode='Generator speed not plausible',
+		, description:'The generator speed recording of the FC differs around a percentage parameter value from the speed 
+		recording by the inductive approximation switch.', 
+		reset:'Auto, Local, Remote'
+		, remoteOperation:' After 5 min no autoreset, try  remote reset (3x).'
+	},	
+	
+	{ alarm:'130', alarm_2:'130', alarmCode='Braking time rotor blade 1 too high',
+		, description:'The braking time of rotor blade 1 in the 90 -position has been exceeded.', 
+		reset:' Local, Remote'
+		, remoteOperation:'Remote reset. Check other active alarms'
+	},	
+	
+	{ alarm:'131', alarm_2:'131', alarmCode='Braking time rotor blade 2 too high',
+		, description:'The braking time of rotor blade 2 in the 90 -position has been exceeded.', 
+		reset:'Local, Remote'
+		, remoteOperation:'Remote reset. Check other active alarms'
+	},	
+	
+	{ alarm:'132', alarm_2:'132', alarmCode='Braking time rotor blade 3 too high',
+		, description:'The braking time of rotor blade 3 in the 90 -position has been exceeded.', 
+		reset:'Local, Remote'
+		, remoteOperation:'Remote reset. Check other active alarms'
+	},	
+	
+	{ alarm:'133', alarm_2:'133', alarmCode='Battery charging rotor blade drive',
+		, description:'The batteries of the rotor blade drive are charged after the battery test or if too low, a battery voltage is suspected.', 
+		reset:'Auto'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'134', alarm_2:'134', alarmCode='Battery charging voltage not OK',
+		, description:'The battery charger in the top cabinet indicates that there is no, or a too low charging voltage for the batteries.', 
+		reset:'Local, Remote'
+		, remoteOperation:'Remote reset. Check other active alarms.'
+	},	
+	
+	{ alarm:'135', alarm_2:'135', alarmCode='Emergency braking system test',
+		, description:'At the end of a certain time period a test of the complete pitch system including backup emergency power supply is carried out.', 
+		reset:'Auto, Local, Remote '
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'136', alarm_2:'136', alarmCode='Limit switch 0 -rotorblade angle unclear',
+		, description:'The current values of the rotor blade angle are not in accordance with the switch position of the end switch at approx. 0 .Reason: Either 
+		the end switch or the position encoder is defective or the rotor blade angle is no longer correct.', 
+		reset:'Local, Remote'
+		, remoteOperation:'Do not remotely restart the WTG, create SAP notification.'
+	},	
+	
+	{ alarm:'137', alarm_2:'137', alarmCode='Limit switch rotor blade 90  defective',
+		, description:'Signal of rotor blade at end switch 90  and blade angle less than feathered position (90 ) 
+		or limit switch is not reached after a battery shutdown.', 
+		reset:'Local, Remote'
+		, remoteOperation:'Do not remotely restart the WTG, create SAP notification.'
+	},	
+	
+	{ alarm:'138', alarm_2:'138', alarmCode='Temperature warning pitch motor',
+		, description:'Temperature monitoring (PTC 130  C) of pitch motor is activated.', 
+		reset:'Local, Remote'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'139', alarm_2:'139', alarmCode='Overtemperature pitch motor',
+		, description:'Temperature monitoring (PTC 150  C) of pitch motor is activated.', 
+		reset:'Auto, Local, Remote'
+		, remoteOperation:'5 auto? Check temperature before 1 remote reset.'
+	},	
+	
+	{ alarm:'140', alarm_2:'140', alarmCode='Motor protection pitch motor',
+		, description:'Motor protection of pitch motor is activated.', 
+		reset:'Local, Remote'
+		, remoteOperation:'1 remote reset.  If doesn t restart call O&amp;M. '
+	},	
+	
+	{ alarm:'141', alarm_2:'141', alarmCode='Generator side CCU collective faults',
+		, description:'The frequency converter on the generator side has a fault. An error occurs in the frequency converter, 
+		which represents neither a voltage, nor a current, nor a temperature error but still leads to a shutdown.', 
+		reset:'Auto, Local, Remote'
+		, remoteOperation:' After 5 min no autoreset, try  remote reset (3x).'
+	},	
+	
+	{ alarm:'142', alarm_2:'142', alarmCode='Line CCU collective faults',
+		, description:'The frequency converter on the line side has a fault. An error occurs in the frequency converter, 
+		which represents neither a voltage, nor a current, nor a temperature error but still leads to a shutdown.', 
+		reset:'Auto, Local, Remote'
+		, remoteOperation:'3 remote reset.  If doesn t restart call O&amp;M. '
+	},	
+	
+	{ alarm:'143', alarm_2:'143', alarmCode='Pulse sensor rotor monitor defect',
+		, description:'Proximity switch for monitoring of rotor overspeed is faulty.', 
+		reset:'Local, Remote'
+		, remoteOperation:'1 remote reset.  If doesn t restart call O&amp;M. '
+	},	
+	
+	{ alarm:'144', alarm_2:'144', alarmCode='Blade angle asymmetry',
+		, description:'A difference between blade pitch angles is indicated which exceeds the permissible limit.', 
+		reset:'Auto, Local, Remote'
+		, remoteOperation:' After 5 min no autoreset, try  remote reset (3x).'
+	},	
+	
+	{ alarm:'145', alarm_2:'145', alarmCode='Blade pitch control deviation',
+		, description:'An excessively high deviation between blade angle, nominal and actual values is indicated.', 
+		reset:'Auto, Local, Remote'
+		, remoteOperation:'3 remote reset.  If doesn t restart call O&amp;M. '
+	},	
+	
+	{ alarm:'146', alarm_2:'146', alarmCode='Turbine stopped due to calm',
+		, description:'Wind turbine is stopped in idling position because of too low rotor speed. The WTG waits in standstill position
+		with blades in feathered position. It restarts after average wind speed increases.', 
+		reset:'Auto, Local, Remote'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'147', alarm_2:'147', alarmCode='Load shutdown',
+		, description:'In the display mask "General Control" the switch load shutdown is activated. The WTG is idling in 
+		feathered position until the key WTG start is pressed.', 
+		reset:'Local, Remote'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'148', alarm_2:'148', alarmCode='Generator fan service switch',
+		, description:'The service switch for the generator fan is activated at the nacelle cabinet. The generator fan is locked and switched off.', 
+		reset:'Local, Remote'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'149', alarm_2:'149', alarmCode='Axis 2 fault pitch controller',
+		, description:'The axis control on the rotor blade controller has detected an internal error, e.g. tracking error axis 2.', 
+		reset:'Auto, Local, Remote'
+		, remoteOperation:'3 remote reset.  If doesn t restart call O&amp;M. '
+	},	
+	
+	{ alarm:'150', alarm_2:'150', alarmCode='Axis 3 fault pitch controller',
+		, description:'The axis control on the rotor blade controller has detected an internal error, e.g. tracking error axis 3.', 
+		reset:'Auto, Local, Remote'
+		, remoteOperation:'3 remote reset.  If doesn t restart call O&amp;M. '
+	},	
+	
+	{ alarm:'151', alarm_2:'151', alarmCode='Reply circuit breaker generator brush',
+		, description:'Not used in USA/Spain', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},	 
+	
+	{ alarm:'152', alarm_2:'152', alarmCode='Obstruction light fault / failure',
+		, description:'No current is indicated on the flight obstruction light if the twilight switch is activated.', 
+		reset:'Local, Remote'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'153', alarm_2:'153', alarmCode='Generator brushes worn',
+		, description:'At least one brush end switch reports excessive wear of slip ring brushes. After a configurable period, 
+		the turbine is switched off, so that further abrasion is avoided. Replacement of the brushes is necessary.', 
+		reset:'Local, Remote'
+		, remoteOperation:'call O&amp;M'
+	},	
+	
+	{ alarm:'154"   nombreAlarma="Reserved',
+		, description:'', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'155', alarm_2:'155', alarmCode='Maintenance',
+		, description:'The rotary service switch is set to the maintenance position. The maintenance period is counted separately. 
+		No remote commands are carried out. A start command will restart the turbine for 30 minutes.', 
+		reset:'Local, Remote'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'156', alarm_2:'156', alarmCode='Repair',
+		, description:'Rotary service switch is set to the repair position. The repair period is counted separately. No remote commands are carried out. 
+		A start command will restart the turbine for 30 minutes.', 
+		reset:'Local, Remote'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'157', alarm_2:'157', alarmCode='Brake does not close',
+		, description:'1 sec. after applying the brake, the response signal reports that the brake is still released.', 
+		reset:'Local, Remote'
+		, remoteOperation:'3 remote reset.  If doesn t restart call O&amp;M. '
+	},	
+	
+	{ alarm:'161', alarm_2:'161', alarmCode='Overvoltage protection triggered',
+		, description:'The overvoltage protection device in the main or top cabinet is faulty and cannot provide overvoltage protection.', 
+		reset:'Local, Remote'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'162"  nombreAlarma="Fault battery charge switching',
+		, description:'The charge switching relay remains in the same state for a period of two hours. Only one battery of an axis is charged in this case.', 
+		reset:'Local'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'163', alarm_2:'163', alarmCode='Torque deviation',
+		, description:'Assigned torque target value and power are implausible.', 
+		reset:'Auto,Local, Remote '
+		, remoteOperation:' After 5 min no autoreset, try  remote reset (3x).'
+	},	
+	
+	{ alarm:'164', alarm_2:'164', alarmCode='Maintenance switch pitch',
+		, description:'A maintenance switch on the axis cabinet separates the batteries from the pitch motor.', 
+		reset:'Auto,Local, Remote'
+		, remoteOperation:'call O&amp;M if there is nobody working in the WTG'
+	},	
+	
+	{ alarm:'165', alarm_2:'165', alarmCode='Service switch pitch',
+		, description:'The service switch for turning the pitch drive is in the manual operation position.', 
+		reset:'Auto,Local, Remote'
+		, remoteOperation:'Call O&amp;M if there is nobody working in the WTG'
+	},	
+	
+	{ alarm:'166', alarm_2:'166', alarmCode='Normal operation',
+		, description:'Everything o.k., plant is running normal', 
+		reset:'Local, Remote'
+		reset:'N/A'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'167', alarm_2:'167', alarmCode='Voltage limiting activated',
+		, description:'Voltage is limited by assignment of an inductive reactive power and/or by power limitation.', 
+		reset:'Auto,Local, Remote'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'168', alarm_2:'168', alarmCode='Yaw emergency stop',
+		, description:'EM168 is always activated together with EM28. The nacelle is driven 90  out of the wind. An attempt is made to move to the right. 
+		Unless cable unwinding would be activated in the right sector, the nacelle is driven to the left.', 
+		reset:'Local, Remote'
+		, remoteOperation:'Call O&amp;M if there is nobody working in the WTG'
+	},	
+	
+	{ alarm:'169', alarm_2:'169', alarmCode='Waiting for gearbox oil pressure',
+		, description:'Delay time for oil pressure gear box > 70 sec. and current delay time > 5 sec. 
+		Perhaps the oil pressure did not reach the required value in time as the wind turbine is not starting after the start key is pressed.', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'170', alarm_2:'170', alarmCode='Increasing speed with falling blade angle',
+		, description:'Monitoring pitch / rotor speed gradient: 
+		50 ms-averaged speed increases with falling blade angle or excessive speed and blades in the feathering position.', 
+		reset:'Local, Remote'
+		, remoteOperation:'3 remote reset.  If doesn t restart call O&amp;M. '
+	},	
+	
+	{ alarm:'171', alarm_2:'171', alarmCode='Service key brake release',
+		, description:'The service key for releasing the rotor brake has been pressed at the nacelle cabinet.', 
+		reset:'Auto,Local, Remote'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'172', alarm_2:'172', alarmCode='Ice sensor alarm',
+		, description:'The ice sensor detects or indicates low temperature and high humidity. Perhaps there is ice on the rotor blades.', 
+		reset:'Local'
+		, remoteOperation:'Call O&amp;M (Only Lomillas13)'
+	},	
+	
+	{ alarm:'173', alarm_2:'173', alarmCode='Low-noise operation',
+		, description:'Turbine runs at lower rotor speed and power.', 
+		reset:'Auto,Local, Remote'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'174', alarm_2:'174', alarmCode='Overtemperature transformer warning',
+		, description:'Excessive transformer temperature first level (WTG is not switched off).', 
+		reset:'Auto,Local, Remote'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'175', alarm_2:'175', alarmCode='Overtemperature transformer disturbance',
+		, description:'Excessive transformer temperature critical level (WTG switches off).', 
+		reset:'Auto,Local, Remote'
+		, remoteOperation:'Check temperature before 1 remote reset.'
+	},	
+	
+	{ alarm:'176', alarm_2:'176', alarmCode='Drive train vibration',
+		, description:'Accelerometer monitors the frequency range around the natural frequency of the drive train 
+		(approx. 1.8-2.5 Hz) and warns of excessive drive train vibrations.', 
+		reset:'Auto,Local, Remote'
+		, remoteOperation:'3 remote reset.  If doesn t restart call O&amp;M. '
+	},	
+	
+	{ alarm:'177', alarm_2:'177', alarmCode='Tower vibration',
+		, description:'Accelerometer monitors the frequency range around the natural frequency of the tower 
+		(approx. 0,28-0,35 Hz) and warns of tower acceleration.', 
+		reset:'Auto,Local, Remote'
+		, remoteOperation:' After 5 min no autoreset, try  remote reset (3x).'
+	},	
+	
+	{ alarm:'178"  nombreAlarma="Fault battery charge switching shut down',
+		, description:'The relay for charge switching stays in the same condition for an excessive period, so that battery charging 
+		is not switched to other axes. Reset via remote control not possible.', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'179', alarm_2:'179', alarmCode='Successful emergenca braking system test is needed',
+		, description:'Problems related to battery run have come up during battery testing or fault shutdown. The error message can 
+		only be reset after a successful emergency braking system test and correction of the error.', 
+		reset:'Auto, only after successful test'
+		, remoteOperation:'Battery test required. RESET + START + BATTERY TEST. CALL O&amp;M if it does not start'
+	},	
+	
+	{ alarm:'180', alarm_2:'180', alarmCode='Wind deviation',
+		, description:'Average of wind direction deviation too high and average wind speed > 7 m/s.', 
+		reset:'Auto,Local, Remote'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'181', alarm_2:'181', alarmCode='Idling position',
+		, description:'Turbine in spinning position.', 
+		reset:'Auto'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'182', alarm_2:'182', alarmCode='Start-up',
+		, description:'Turbine starting up/idling', 
+		reset:'Auto'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'183', alarm_2:'183', alarmCode='Load operation',
+		, description:'The generator of the wind turbine is online and is producing current.', 
+		reset:'Auto'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'184', alarm_2:'184', alarmCode='Shut down',
+		, description:'The wind turbine is in shut-down mode and pitches the rotor blades in the direction of the feathering position.', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'185', alarm_2:'185', alarmCode='Manual operation pitch',
+		, description:'The control function manual operation pitch is activated while the turbine is in braked mode.', 
+		reset:'Local, Remote'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'186', alarm_2:'186', alarmCode='Manual operation speed',
+		, description:'The control function manual operation speed is activated in idling position.', 
+		reset:'Local, Remote'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'187', alarm_2:'187', alarmCode='Manual operation torque',
+		, description:'The control function manual operation torque is activated in load position.', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'188', alarm_2:'188', alarmCode='Manual operation line separation',
+		, description:'The button 'line separation' in the display mask 'control functions' of the frequency converter has been pressed. 
+		The WTG has reached disconnection speed (approx. 1100 rpm for 1.5/3.x, 550rpm for 2.x) and is separated from the line.', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'189', alarm_2:'189', alarmCode='Manual operation yaw',
+		, description:'Manual yaw adjustment or yaw blocking with service switch (control function - general, operating function on operating device at top cabinet). 
+		After 30 min. of manual operation, the turbine is switched off.', 
+		reset:'Local, Remote'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'190', alarm_2:'190', alarmCode='Temperature error container/nacelle',
+		, description:'Nacelle temperature too high. (Not used for CWE turbines).', 
+		reset:'Auto,Local, Remote'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'191', alarm_2:'191', alarmCode='Manual operation generator fan',
+		, description:'Manual operation via PC (local or remote) or operating device, fan is then permanently on or off.', 
+		reset:'Auto,Local, Remote'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'192', alarm_2:'192', alarmCode='Wrong parameter check sum',
+		, description:'At the program start of the PLC, parameters in the permanent memory are checked with regard to their consistency using a checksum.
+		If there are any discrepancies, the default values are loaded. This message (FM 192) indicates that the plant is locked for start-up.', 
+		reset:'Local, Remote'
+		, remoteOperation:'Call O&amp;M'
+	},	
+	
+	{ alarm:'193', alarmCode='Marine obstruction light',
+		, description:'', 
+		reset:'Unknown'
+		, remoteOperation:'unknown'
+	},	
+	
+	{ alarm:'194', alarm_2:'194', alarmCode='By-pass filter soiling',
+		, description:'Gear box partial flow filter dirty.', 
+		reset:'Unknown'
+		, remoteOperation:'unknown'
+	},	
+	
+	{ alarm:'195', alarm_2:'195', alarmCode='Gearbox pressure loss by-pass filter',
+		, description:'Failure partial flow filtration pump.', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'196"  nombreAlarma="Pre-heating fault CCU cooling system',
+		, description:'Preheating converter cooler failed.', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'197"   nombreAlarma="Overtemp. CCU cooling system',
+		, description:'Overtemperature converter cooler.', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'198"  nombreAlarma="Pressure fault converter cooler',
+		, description:'', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'199"  nombreAlarma="Fault test converter cooler',
+		, description:'', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'200"  nombreAlarma="Preheating converter cooler active',
+		, description:'', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'201', alarm_2:'201', alarmCode='PLC fault 24V-power supply',
+		, description:'The external 24V-power supply in at least one control unit module is defective.', 
+		reset:'Local, Remote'
+		, remoteOperation:'1 remote reset.  If doesn t restart call O&amp;M. '
+	},	
+	
+	{ alarm:'202', alarm_2:'202', alarmCode='PLC module failure',
+		, description:'There is a fault in at least one control unit module.', 
+		reset:'Local, Remote'
+		, remoteOperation:'1 remote reset.  If doesn t restart call O&amp;M. '
+	},	
+	
+	{ alarm:'203', alarm_2:'203', alarmCode='Fault temperature measurement',
+		, description:'All temperature measurements on the PTAI module have remained constant for 10 minutes (resolution 0.1 ).', 
+		reset:'Local, Remote'
+		, remoteOperation:'Remote reset untill O&amp;M checked locally'
+	},	
+	
+	{ alarm:'204', alarm_2:'204', alarmCode='Fast Bus servicemode',
+		, description:'Data bus plant control in service mode.', 
+		reset:'Local, Remote'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'205', alarm_2:'205', alarmCode='Overtemperature topbox',
+		, description:'One or more of the cabinet temperatures are over their defined max limits + 5K or turbine operates with SM313 since more than 24h. 
+		Message is automatically reset if temperature drops below max limits +5k and SM313 is not active for longer than 24h. Check P35.20 for fault location.', 
+		reset:'Auto,Local, Remote'
+		, remoteOperation:'5 auto? Check temperature before 1 remote reset.'
+	},	
+	
+	{ alarm:'206', alarm_2:'206', alarmCode='Gear pressure too high',
+		, description:'Compressed oil circulating lubrication is too high.', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'207"  nombreAlarma="Ground fault LVMD',
+		, description:'Earth fault low voltage main distribution.', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'208', alarm_2:'208', alarmCode='No activity CAN-Bus CCU',
+		, description:'Communication error between plant control system and converter (only plants with CAN-BUS).', 
+		reset:'Local, Remote'
+		, remoteOperation:'1 remote reset.  If doesn t restart call O&amp;M. '
+	},	
+	
+	{ alarm:'209', alarm_2:'209', alarmCode='No activity CAN-Bus MFR13',
+		, description:'Communication error between plant control system and grid monitoring device.', 
+		reset:'Auto,Local, Remote'
+		, remoteOperation:'1 remote reset.  If doesn t restart call O&amp;M. '
+	},	
+	
+	{ alarm:'210"  nombreAlarma="Timeout decentral box',
+		, description:'Status monitoring of the CAN bus module -> CAN bus connection interrupted/disturbed or PPM shut down.', 
+		reset:'Auto'
+		, remoteOperation:'1 remote reset.  If doesn t restart call O&amp;M. '
+	},	
+	
+	{ alarm:'212', alarm_2:'212', alarmCode='Battery voltage low axis 1',
+		, description:'The battery voltage at the pitch system on axis 1 is too low.', 
+		reset:'Local, Remote'
+		, remoteOperation:'3 remote reset.  If doesn t restart call O&amp;M. '
+	},	
+	
+	{ alarm:'213', alarm_2:'213', alarmCode='Battery voltage low axis 2',
+		, description:'The battery voltage at the pitch system on axis 2 is too low.', 
+		reset:'Local, Remote'
+		, remoteOperation:'3 remote reset.  If doesn t restart call O&amp;M. '
+	},	
+	
+	{ alarm:'214', alarm_2:'214', alarmCode='Battery voltage low axis 3',
+		, description:'The battery voltage at the pitch system on axis 3 is too low.', 
+		reset:'Local, Remote'
+		, remoteOperation:'3 remote reset.  If doesn t restart call O&amp;M. '
+	},	
+	
+	{ alarm:'215', alarm_2:'215', alarmCode='Direction dependent shut-down',
+		, description:'Plant switches off as nacelle is standing in an inadmissible direction.', 
+		reset:'Auto,Local, Remote'
+		, remoteOperation:'automatic ( es un estado, estela)'
+	},	
+	
+	{ alarm:'216"  nombreAlarma="Obstruction light switch over to auxiliary lamps',
+		, description:'The main pair of obstruction lights is defective, switch-over to auxiliary pair.', 
+		reset:'Local, Remote'
+		, remoteOperation:'warning ( do not stop)'
+	},	
+	
+	{ alarm:'217', alarm_2:'217', alarmCode='End of parameter state service',
+		, description:'Any parameter changes made at the service level are cancelled on leaving this level.', 
+		reset:'Auto'
+		, remoteOperation:'Estado'
+	},	
+	
+	{ alarm:'218', alarm_2:'218', alarmCode='Frequent cut-ins',
+		, description:'The power switch has been actuated too frequently.', 
+		reset:'Local, Remote'
+		, remoteOperation:'warning ( do not stop)'
+	},	
+	
+	{ alarm:'219', alarm_2:'219', alarmCode='Ice sensor fault',
+		, description:'The ice sensor reports a malfunction.', 
+		reset:'Local, Remote'
+		, remoteOperation:'1 remote reset.  If doesn t restart call O&amp;M. '
+	},	
+	
+	{ alarm:'220', alarm_2:'220', alarmCode='External stop caused by curtailment',
+		, description:'External command from park PC with wind shading monitoring. Some of the WTGs that are 
+		standing too close are to be switched off due to turbulences.', 
+		reset:'Auto'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'221', alarm_2:'221', alarmCode='Receiving External Power Command',
+		, description:'External command from park PC with max. output specification.', 
+		reset:'Auto,Local, Remote'
+		, remoteOperation:'Estado'
+	},	
+	
+	{ alarm:'222', alarm_2:'222', alarmCode='Yaw runaway',
+		, description:'Nacelle moves without activation of yaw.', 
+		reset:'Local, Remote'
+		, remoteOperation:'After 5 min 1 remote reset .after 30min second remote reset.  If doesn t restart call O&amp;M. '
+	},	
+	
+	{ alarm:'223', alarm_2:'223', alarmCode='Implausible blade angle axis 1',
+		, description:'Blade angle 1 outside permissible value range -10 ..95  or current value jump.', 
+		reset:'Local'
+		, remoteOperation:'1 remote reset.  If doesn t restart call O&amp;M. '
+	},	
+	
+	{ alarm:'224"  nombreAlarma="Feedback error circuit breaker',
+		, description:'If contactors are used for the synchronization, missing feedback signals from the circuit breaker (CB) are monitored.', 
+		reset:'Local'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'225"   nombreAlarma="Gear oil level warning',
+		, description:'', 
+		reset:'N/A'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'226"   nombreAlarma="UPS 24V - monitoring',
+		, description:'', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'227', alarm_2:'227', alarmCode='Pulse generator standstill detector defective',
+		, description:'The proximity switch signals that are received by the standstill detector for the rotor lock have failed.', 
+		reset:'Local, Remote'
+		, remoteOperation:'1 remote reset.  If doesn t restart call O&amp;M.  Check rpm rotor vs generator .'
+	},	
+	
+	{ alarm:'228', alarmCode='Temperature warning 2. Pitch motor',	
+ 		, description:'', 
+		reset:'N/A'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'229"  nombreAlarma="Overtemperature 2. Pitch motor',
+		, description:'', 
+		reset:'Remote'
+		, remoteOperation:'After 15 min 1 remote reset .If no restart Call O&amp;M '
+	},	
+	
+	{ alarm:'230', alarmCode='Motor protection device hub',
+		, description:'', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'231', alarm_2:'231', alarmCode='Motor protection device / fuse main cabinet',
+		, description:'A motor protection device / automatic circuit-breaker in the tower cabinet has triggered.', 
+		reset:'Local, Remote'
+		, remoteOperation:'1 remote reset.  If doesn t restart call O&amp;M. '
+	},	
+	
+	{ alarm:'232', alarm_2:'232', alarmCode='Motor protection device / fuse tower cabinet',
+		, description:'A motor protection device / automatic circuit-breaker in the tower cabinet has triggered.', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'233', alarm_2:'233', alarmCode='Motor protection device / fuse top cabinet 400V',
+		, description:'A motor protection device / automatic circuit breaker (400V) in the top cabinet has triggered.', 
+		reset:'Local, Remote'
+		, remoteOperation:'1 remote reset.  If doesn t restart call O&amp;M. '
+	},	
+	
+	{ alarm:'234"  nombreAlarma="Motor protection device / fuse yaw cabinet',
+		, description:'', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'235"  nombreAlarma="Power circuit breaker CCU released',
+		, description:'', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'236"  nombreAlarma="Power circuit breaker MHVS released',
+		, description:'', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'237', alarm_2:'237', alarmCode='Generator 3 overtemperature',
+		, description:'The third winding temperature in the generator has reached the over temperature limit.', 
+		reset:'Auto,Local, Remote'
+		, remoteOperation:'5 auto? Check temperature before 1 remote reset.'
+	},	
+	
+	{ alarm:'238"  nombreAlarma="Open Plant-CB',
+		, description:'Medium voltage switch gear of plant open or medium voltage switch gear of plant not closed.', 
+		reset:'Auto,Local, Remote'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'239"  nombreAlarma="Open Park-CB',
+		, description:'Input of medium voltage switch gear of power station open or medium voltage switch gear of power station not closed', 
+		reset:'Auto,Local, Remote'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'240', alarm_2:'240', alarmCode='Anemometer deviation',
+		, description:'The two anemometers indicate different wind speeds.', 
+		reset:'Local, Remote'
+		, remoteOperation:'3 remote reset.  If doesn t restart call O&amp;M. '
+	},	
+	
+	{ alarm:'241', alarm_2:'241', alarmCode='Wind vane deviation',
+		, description:'The two wind vanes indicate different wind directions.', 
+		reset:'Local, Remote'
+		, remoteOperation:'3 remote reset.  If doesn t restart call O&amp;M. '
+	},	
+	
+	{ alarm:'242', alarm_2:'242', alarmCode='Yaw hydr. pump time too long',
+		, description:'The maximum pump time of the yaw hydraulic pump has exceeded the time set in P11.17. 
+		The pump time is not monitored if the yaw is moving and the pressure on the brake is reduced with an overrun time of 60s.', 
+		reset:'Local, Remote'
+		, remoteOperation:'1 remote reset.  If doesn t restart call O&amp;M. '
+	},	
+	
+	{ alarm:'243', alarm_2:'243', alarmCode='Yaw hydr. pump interval time too short',
+		, description:'This error is triggered if the hydraulic yaw brake pump starts and stops more than 5 times in the time given in P11.18.
+		The pump interval time is not monitored if the yaw is moving and the pressure on the brake is reduced with an overrun time of 60s.', 
+		reset:'Local, Remote'
+		, remoteOperation:'1 remote reset.  If doesn t restart call O&amp;M. '
+	},	
+	
+	{ alarm:'244', alarm_2:'244', alarmCode='Motorpro / fuse main cabinet warning',
+		, description:'A motor protection / fuse in the main cabinet has triggered a warning. Turbine can continue running, service necessary. (2.5xl only).', 
+		reset:'Local, Remote'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'245', alarm_2:'245', alarmCode='Motorprotection / fuse topbox warning',
+		, description:'A motor protection / fuse in the top box has triggered a warning. Turbine can continue running, service necessary. (2.5xl only).', 
+		reset:'Local, Remote'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'246', alarm_2:'246', alarmCode='Timeout vibration monitor',
+		, description:'The CAN bus connection to the vibration monitor has been interrupted.', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'247', alarm_2:'247', alarmCode='Cable supervision pitch motor',
+		, description:'The supervision of the cable connection between axis cabinet an pitch motor has triggered on at least one axis.', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'248"  nombreAlarma="MBL failure pump 1 and 2',
+		, description:'', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'249"   nombreAlarma="Condition monitoring torque warning',
+		, description:'', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'250', alarm_2:'250', alarmCode='Temperature sensor error (shut down)',
+		, description:'A temperature sensor that is important for plant control is defective (or cable break or short-circuit)', 
+		reset:'Local, Remote'
+		, remoteOperation:'1 remote reset.  If doesn t restart call O&amp;M. '
+	},	
+	
+	{ alarm:'251', alarm_2:'251', alarmCode='Temperature sensor error (warning)',
+		, description:'A temperature sensor that is not important for plant control is defective (or cable break or short-circuit)', 
+		reset:'Local, Remote'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'252', alarm_2:'252', alarmCode='Temperature implausible ',
+		, description:'Comparable temperatures show different values.', 
+		reset:'Local, Remote'
+		, remoteOperation:'1 remote reset.  If doesn t restart call O&amp;M. '
+	},	
+	
+	{ alarm:'253"  nombreAlarma="Reference switch 10  - blade angle implausible',
+		, description:'', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'254', alarm_2:'254', alarmCode='Temperature gear oil distributor too high',
+		, description:'The gear oil temperature at the distributor has reached the over temperature limit.', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'255', alarm_2:'255', alarmCode='Gear box filter dirty mechanical pump',
+		, description:'The gear box filter in the mechanical cooling circuit is dirty.', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'256', alarmCode='Gear oil mechanical pump not ok',
+		, description:'', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'257', alarm_2:'257', alarmCode='MBL manual operation',
+		, description:'Manual operation has been selected for the main bearing lubrication.', 
+		reset:'Auto'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'258', alarm_2:'258', alarmCode='Gear box manual operation',
+		, description:'Manual operation has been selected for the gear box.', 
+		reset:'Auto'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'259', alarm_2:'259', alarmCode='CCU cooling manual operation',
+		, description:'Manual operation has been selected for the converter cooling.', 
+		reset:'Auto'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'260', alarm_2:'260', alarmCode='Anemometer heating manual operation',
+		, description:'Manual operation has been selected for the anemometer heating.', 
+		reset:'Auto'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'261', alarm_2:'261', alarmCode='Manual operation hydraulic system / brake',
+		, description:'Manual operation has been selected for the hydraulic system including brake.', 
+		reset:'Auto'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'262', alarm_2:'262', alarmCode='Manual snapshot',
+		, description:'Manually actuated snapshot that stores plant data for 10 minutes.', 
+		reset:'Auto'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'263', alarm_2:'263', alarmCode='Manual operation generator heating',
+		, description:'Manual operation has been selected for the generator heating.', 
+		reset:'Auto'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'264', alarm_2:'264', alarmCode='Module failure pitch controller',
+		, description:'Monitoring error status of all control modules in the hub.', 
+		reset:'Remote, Local'
+		, remoteOperation:'1 remote reset.  If doesn t restart call O&amp;M. '
+	},	
+	
+	{ alarm:'265"  nombreAlarma="Container suspension',
+		, description:'', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'266', alarm_2:'266', alarmCode='Voltage asymmetry 400V',
+		, description:'A voltage asymmetry has been detected in the 400V power supply.', 
+		reset:'Remote, Local'
+		, remoteOperation:'1 remote reset.  If doesn t restart call O&amp;M. '
+	},	
+	
+	{ alarm:'267', alarm_2:'267', alarmCode='Generator base vibration',
+		, description:'The vibration monitoring device on the generator base has actuated.', 
+		reset:'Remote, Local'
+		, remoteOperation:' Autoreset. If the WTG does not autoreset then try 1 remote reset.  If doesn t restart call O&amp;M. '
+	},	
+	
+	{ alarm:'268', alarm_2:'268', alarmCode='Communication error energy meter',
+		, description:'Communication with the external energy meter has been interrupted.', 
+		reset:'Remote, Local'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'269', alarm_2:'269', alarmCode='Reboot PLC',
+		, description:'A Reboot of the PLC has been triggered.', 
+		reset:'Auto, Remote, Local'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'270', alarm_2:'270', alarmCode='Fire alarm',
+		, description:'The manual or automatic fire alarm has actuated.', 
+		reset:'Local'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'271', alarm_2:'271', alarmCode='Malfunction particle counter',
+		, description:'The particle counter has detected an internal error. In the case of the GasTOPS metalSCAN 3000 (only model currently used), 
+		the sensor includes a self-test function that checks the health of the sensor every 145 seconds.', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'272', alarm_2:'272', alarmCode='Shadow related shut down',
+		, description:'The external shadow sensor has actuated and the plant has been shut down.', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'273', alarm_2:'273', alarmCode='Too long manual / service operation',
+		, description:'The plant overran the time limit for manual or service operation and was shut down as a result.', 
+		reset:''
+		, remoteOperation:'El tecnico arranca WTG con llave puesta. Al paso de un tiempo (30 min aprox) para. Es necesario ir a retirar llave.'
+	},	
+	
+	{ alarm:'274', alarm_2:'274', alarmCode='Pitch thyristor 1 fault',
+		, description:'The thyristor board of axis 1 has signaled a fault.', 
+		reset:'Local, Remote'
+		, remoteOperation:'1 remote reset.  If doesn t restart call O&amp;M. '
+	},	
+	
+	{ alarm:'275', alarm_2:'275', alarmCode='Pitch thyristor 2 fault',
+		, description:'The thyristor board of axis 2 has signaled a fault.', 
+		reset:'Local, Remote'
+		, remoteOperation:'1 remote reset.  If doesn t restart call O&amp;M. '
+	},	
+	
+	{ alarm:'276', alarm_2:'276', alarmCode='Pitch thyristor 3 fault',
+		, description:'The thyristor board of axis 3 has signaled a fault.', 
+		reset:'Local, Remote'
+		, remoteOperation:'1 remote reset.  If doesn t restart call O&amp;M. '
+	},	
+	
+	{ alarm:'277', alarm_2:'277', alarmCode='Power limitation due to high temperature',
+		, description:'Occurs if power is reduced due to high component temperature. (Components may be e. g. the frequency converter, generator, transformer.)', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'278', alarm_2:'278', alarmCode='Shut-down low voltage',
+		, description:'The max. operating time with low voltage has been exceeded and the plant shut down.', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'279', alarm_2:'279', alarmCode='Low voltage ride through',
+		, description:'The plant rides through a brief voltage dip in the grid.', 
+		reset:'Auto'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'280', alarm_2:'280', alarmCode='Prepressure error, active brake',
+		, description:'The test of the hydraulic accumulator of the active brake has failed.', 
+		reset:'Local, Remote'
+		, remoteOperation:'1 remote reset.  If doesn t restart call O&amp;M. '
+	},	
+	
+	{ alarm:'281', alarm_2:'281', alarmCode='Prepressure warning, active brake',
+		, description:'The test of the hydraulic accumulator of the active brake has discovered fatigue in the accumulator. 
+		The bag-type accumulator should be inspected.', 
+		reset:'Local, Remote'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'282', alarm_2:'282', alarmCode='Test prepressure active brake',
+		, description:'The functions of the hydraulic accumulator of the active brake are tested.', 
+		reset:'Auto'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'283"  nombreAlarma="Malfunction external oil heater',
+		, description:'A malfunction has been detected in the external oil storage tank.', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'284"   nombreAlarma="Excess Temperature external oil heater',
+		, description:'Excess temperature has been detected in the external oil heater.', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'285', alarmCode='Timeout CAN communication to hub',
+		, description:'The CAN bus connection from the top box to the hub is faulty.', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'286', alarm_2:'286', alarmCode='Crow bar triggered CCU',
+		, description:'The converter has triggered the crowbar protection circuit.', 
+		reset:'Auto'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'287', alarm_2:'287', alarmCode='Power limitation CCU',
+		, description:'The converter cannot produce the level of power (torque) requested by the BEC. This will occur during certain grid conditions.', 
+		reset:'Auto'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'288', alarm_2:'288', alarmCode='Response signal interrupt battery driven pitching',
+		, description:'The switch-over to the interruption of battery driven pitching in the event of voltage dips is not functioning correctly.', 
+		reset:'Local, Remote'
+		, remoteOperation:'1 remote reset.  If doesn t restart call O&amp;M. '
+	},	
+	
+	{ alarm:'289', alarm_2:'289', alarmCode='Test measuring system',
+		, description:'Tests of the measuring system are cyclically performed with low wind for calibration of the measuring signals from the blade and tower. 
+		These tests can be configured via parameters.', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'290', alarm_2:'290', alarmCode='Idling in speed control',
+		, description:'The turbine idles in a speed-controlled manner when the gearbox is too cold (Message 84 active).
+		This idling mode is used to warm up the gearbox with low stress. Status message 290 is active during this operating status.', 
+		reset:'Auto'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'291', alarmCode='Undertemperature cabinet',
+		, description:'An undertemperature has been detected in one of the switch cabinets.', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'292', alarmCode='Malfunction cabinet heaters',
+		, description:'A malfunction has been detected in one of the cabinet heaters.', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'293', alarmCode='Malfunction temp switch cabinet',
+		, description:'A malfunction has been detected in the thermostat of the cabinet heater.', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'294', alarm_2:'294', alarmCode='Warning advanced control sensor',
+		, description:'There is an error detected in one of the 4 advanced control sensors .
+		This defect sensor is not taken anymore for the controls and the turbine continues to run at rated power.', 
+		reset:'Local, Remote'
+		, remoteOperation:'Aplica limitaci n WTG.'
+	},	
+	
+	{ alarm:'295', alarmCode='Heat up state',
+		, description:'The cooled WTG is heated up after a plant failure.', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'296', alarmCode='Malfunction diverter',
+		, description:'The generator exhaust diversion is not functioning correctly.', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'297', alarmCode='Turbine heat-up error',
+		, description:'The heat-up time of the turbine has exceeded the max. permissible heat-up time.', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'298', alarmCode='Orifice brake hydraulic soiled',
+		, description:'', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'299', alarm_2:'299', alarmCode='Blackout timesynchronization',
+		, description:'The max. time between two sync. pulses has been exceeded with the time synchronization activated.', 
+		reset:'Auto'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'300', alarm_2:'300', alarmCode='Generator grease storage tank empty',
+		, description:'The storage tank of the generator lubrication system must be refilled', 
+		reset:'Local, Remote'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'301', alarm_2:'301', alarmCode='Malfunction generator lubrication',
+		, description:'There is a malfunction in the generator bearing lubrication system', 
+		reset:'Local, Remote'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'302', alarm_2:'302', alarmCode='Brake pad worn, warning',
+		, description:'The brake pad of the active rotor brake is worn.', 
+		reset:'Local, Remote'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'303', alarm_2:'303', alarmCode='Malfunction time switch',
+		, description:'A malfunction in the time switch for initiating low-noise operation has been detected.', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'304', alarm_2:'304', alarmCode='Main bearing storage tank empty',
+		, description:'The storage tank of the main bearing must be refilled.', 
+		reset:'Local, Remote'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'305', alarmCode='Condition monitoring vibration warning',
+		, description:'', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'306', alarm_2:'306', alarmCode='Manual operation yaw hydraulic',
+		, description:'Manual operation has been selected for the yaw braking system.', 
+		reset:'Local'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'307', alarmCode='Helicopter approach',
+		, description:'', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'308', alarm_2:'308', alarmCode='Idling command at WTG',
+		, description:'The idling/reset button on the control cabinet has been actuated.', 
+		reset:'Local'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'309', alarm_2:'309', alarmCode='Idling from Remote control',
+		, description:'Manual idling command from the Remote PC (general control function). WTG is braked without rotor brake engaging. 
+		Faults are not reset by this command.', 
+		reset:'Remote'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'310', alarm_2:'310', alarmCode='Fault reset',
+		, description:'The active error messages have been acknowledged.', 
+		reset:'Auto'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'311', alarm_2:'311', alarmCode='Fire alarm warning',
+		, description:'A fire detection system signals a warning on DI2.15, DI13.18 or 
+		DECIO.13 and the turbine is configured to not shut down in case of a fire warning (P26.16Bit3=1).', 
+		reset:'Local'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'312', alarm_2:'312', alarmCode='Fire alarm sensor error',
+		, description:'The fire alarm sensor has signaled a sensor error.', 
+		reset:'Local, Remote'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'313', alarmCode='Cabinet overtemperature warning',
+		, description:'One or more of the cabinet temperatures are over their defined max limits. Message is automatically reset if temperature drops below max limits. 
+		Turbine operation with this warning is possible for maximal 24h. Check P35.20 for fault location.', 
+		reset:'Remote, Local'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'314', alarm_2:'314', alarmCode='Power limitation freq. dependent',
+		, description:'The power of the WTG has been limited owing to grid frequency fluctuations.', 
+		reset:'Auto'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'315', alarmCode='Burglary in turbine',
+		, description:'The detector has actuated.', 
+		reset:'Local'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'316', alarmCode='Burglary control deactivated',
+		, description:'The burglary detector has been deactivated.', 
+		reset:'Auto'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'317', alarmCode='Undertemperature slipring',
+		, description:'Slip ring temperature has fallen below the minimum.', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'318', alarm_2:'318', alarmCode='Fault adv. controls sensor out of flat',
+		, description:'The 4 main shaft flange sensors relative to the offsets seem not to be in-plane. One sensor could be shifted. 
+		Together with EM318 also EM355 is set and power is reduced.', 
+		reset:'Local, Remote'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'319', alarm_2:'319', alarmCode='Service switch rotorlock',
+		, description:'Bridge rotor lock key is activated at the top box. Then the safety chain remains closed if the rotor lock is engaged.', 
+		reset:'Auto'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'320', alarmCode='Stator filter fuses',
+		, description:'', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'321', alarm_2:'321', alarmCode='Yaw lubrication warning',
+		, description:'During activation of yaw lubrication pump the pressure has not built up (DI12.21 stays 1) within max. pump time P32.17 for 5 times in automatic operation or within 2h in manual operation. For combined lubrication system (main and yaw bearing, P32.10 bit2 = 1): 
+		If the pump is activated for yaw greasing and the pressure is too high (DI12.31=0) for a time period of 15 seconds.', 
+		reset:'Local, Remote'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'322', alarm_2:'322', alarmCode='Blade bearing lubrication warning',
+		, description:'During activation of blade bearing lubrication pump the pressure has not built up (DI61.23 or DI71.23 or DI81.23 stay 
+		1) within max. pump time P32.19 for 5 times in automatic operation or within 2h in manual operation.', 
+		reset:'Local, Remote'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'323', alarm_2:'323', alarmCode='Excess temperature tower base',
+		, description:'Excess temperature has been detected in the tower base of the WTG.', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'324', alarm_2:'324', alarmCode='Activation rotor lock',
+		, description:'The rotor locking device has been activated.', 
+		reset:'Auto'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'325', alarm_2:'325', alarmCode='Transformer overpressure',
+		, description:'The transformer has signaled an overpressure.', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'326', alarm_2:'326', alarmCode='Limit switch 95  faulty',
+		, description:'The 95  limit switch of the blade pitching is defective.', 
+		reset:'Local, Remote'
+		, remoteOperation:'1 remote reset.  If doesn t restart call O&amp;M. '
+	},	
+	
+	{ alarm:'327', alarm_2:'327', alarmCode='Limit switch 95  overrun',
+		, description:'A blade has been traversed to the 95  limit switch.', 
+		reset:'Local, Remote'
+		, remoteOperation:'1 remote reset.  If doesn t restart call O&amp;M. '
+	},	
+	
+	{ alarm:'328', alarm_2:'328', alarmCode='UPS fault',
+		, description:'The UPS is either faulty or in bypass mode.', 
+		reset:'Local, Remote'
+		, remoteOperation:'1 remote reset.  If doesn t restart call O&amp;M. '
+	},	
+	
+	{ alarm:'329', alarm_2:'329', alarmCode='UPS battery undercapacity',
+		, description:'The battery of the UPS has discharged. UPS will switch off in 2 - 3 min. (Will be completely run down).', 
+		reset:'Local, Remote'
+		, remoteOperation:'1 remote reset.  If doesn t restart call O&amp;M. '
+	},	
+	
+	{ alarm:'330', alarm_2:'330', alarmCode='MBL pressure fault',
+		, description:'"Lincoln MBL (P26.16 Bit9=0): If the pump is activated, the state of the pressure sensor (DI12.30) must change at least every 15s to indicate the cyclic build-up of pressure and release into the bearing.
+Lubcon MBL (P26.16 Bit9=1):
+If the pump is activated and the pressure is too high (DI12.30=1) for a time period of 15 seconds. For combined lubrication system (main and yaw bearing, P32.10 bit2 = 1): If the pump is activated for main bearing greasing and the pressure is too high (DI12.31=0) for a time period of 15 seconds."', 
+		reset:'Local, Remote'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'331', alarm_2:'331', alarmCode='Manual mode PPM fan',
+		, description:'Manual mode of the transformer or CCU fan has been selected via control commands in VisuPro or on the operating panel.', 
+		reset:'Auto'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'332', alarm_2:'332', alarmCode='Manual mode vibration sensor',
+		, description:'Manual mode of vibration sensors has been selected via control commands in VisuPro or on the operating panel.', 
+		reset:'Auto'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'333', alarm_2:'333', alarmCode='Restart blockec due to line frequency',
+		, description:'Start is blocked with this message, if grid frequency &gt; P38.15 or &lt; P38.16 or grid voltage related to P20.14 &gt; P38.17 or &lt; P38.18 and WTG was not online at least once after last grid outage. Start is released again if grid frequency and voltage is in normal range for 30sec.', 
+		reset:'Auto'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'334', alarm_2:'334', alarmCode='Circuit breaker maintenance required',
+		, description:'The number of cycles performed by the CB has exceeded the max. number after which the CB has to be maintained.', 
+		reset:'Local'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'335', alarm_2:'335', alarmCode='Generator Overspeed 2',
+		, description:'As soon as the generator speed exceeds a configurable limit, the control system will initiate a hard braking process with the safety chain opened.', 
+		reset:'Local'
+		, remoteOperation:'1 remote reset.  If doesn t restart call O&amp;M. '
+	},	
+	
+	{ alarm:'336', alarm_2:'336', alarmCode='Rotor Overspeed 2',
+		, description:'As soon as the rotor speed exceeds a configurable limit, the control system will initiate a hard braking process with the safety chain opened.', 
+		reset:'Local'
+		, remoteOperation:'1 remote reset.  If doesn t restart call O&amp;M. '
+	},	
+	
+	{ alarm:'337', alarm_2:'337', alarmCode='Line CCU temperature warning',
+		, description:'The line side converter temperature reaches the warning level.', 
+		reset:'Auto'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'338', alarm_2:'338', alarmCode='Rotor CCU temperature warning',
+		, description:'The rotor side converter temperature reaches the warning level', 
+		reset:'Auto'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'339', alarm_2:'339', alarmCode='CCU inits turbine shutdown',
+		, description:'The converter demands a shutdown of the turbine (overtemperature faults).', 
+		reset:'Auto, Local, Remote'
+		, remoteOperation:'1 remote reset.  If doesn t restart call O&amp;M. '
+	},	
+	
+	{ alarm:'340', alarm_2:'340', alarmCode='Blade angle control deviation axis 2',
+		, description:'The blade angle actual value of axis 2 does not follow the blade angle set value.', 
+		reset:'Auto, Local, Remote'
+		, remoteOperation:'1 remote reset.  If doesn t restart call O&amp;M. '
+	},	
+	
+	{ alarm:'341', alarm_2:'341', alarmCode='Blade angle control deviation axis 3',
+		, description:'The blade angle actual value of axis 3 does not follow the blade angle set value.', 
+		reset:'Auto, Local, Remote'
+		, remoteOperation:'1 remote reset.  If doesn t restart call O&amp;M. '
+	},	
+	
+	{ alarm:'342', alarm_2:'342', alarmCode='Blade angle implausible axis 2',
+		, description:'Either a sudden change in the blade angle actual value of axis 2 has been detected or the blade angle actual value of this axis is outside the permitted value range.', 
+		reset:'Local'
+		, remoteOperation:'1 remote reset.  If doesn t restart call O&amp;M. '
+	},	
+	
+	{ alarm:'343', alarm_2:'343', alarmCode='Blade angle implausible axis 3',
+		, description:'Either a sudden change in the blade angle actual value of axis 3 has been detected or the blade angle actual value of this axis is outside the permitted value range.', 
+		reset:'Local'
+		, remoteOperation:'1 remote reset.  If doesn t restart call O&amp;M. '
+	},	
+	
+	{ alarm:'344', alarm_2:'344', alarmCode='Pitch fault 2 or 3 blades',
+		, description:'A pitch system failure has been detected on more than one blade. Immediate changeover to battery-driven pitching. The following errors messages will be taken into account in this case: 121, 145, 149, 150, 223, 274, 275, 276, 340, 341, 342, 343.', 
+		reset:'Local, Remote'
+		, remoteOperation:'1 remote reset.  If doesn t restart call O&amp;M. '
+	},	
+	
+	{ alarm:'345', alarm_2:'345', alarmCode='Battery-driven pitching after grid fault',
+		, description:'During a grid fault, a pitch system failure has been detected on at least one blade. The WTG is shut down using battery power.', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'346', alarm_2:'346', alarmCode='Rotor speeds implausible',
+		, description:'Both calculated rotor speeds are deviating from each other (time-delayed, at max. permissible deviation).', 
+		reset:'Local, Remote'
+		, remoteOperation:'1 remote reset.  If doesn t restart call O&amp;M. '
+	},	
+	
+	{ alarm:'347', alarm_2:'347', alarmCode='Power limitation bedplate vibration',
+		, description:'Power and speed of the WTG are reduced due to vibrations on the bedplate.', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'348', alarm_2:'348', alarmCode='Service stop ',
+		, description:'The WTG, running OK, has been shut down with closed brake by service personnel.', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'349', alarm_2:'349', alarmCode='Service stop with fault',
+		, description:'The WTG, indicating a failure, has been shut down with closed brake by service personnel.', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'350', alarm_2:'350', alarmCode='Service idling command',
+		, description:'The WTG, running OK, has been shut down in idling mode by service personnel.', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'351', alarm_2:'351', alarmCode='Service idling command with fault',
+		, description:'The WTG, indicating a failure, has been shut down in idling mode by service personnel.', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'352', alarmCode='Communication fault wind measurement device',
+		, description:'The serial communication with ultrasonic wind measurement device is disturbed.', 
+		reset:'Local, Remote'
+		, remoteOperation:'1 remote reset.  If doesn t restart call O&amp;M. '
+	},	
+	
+	{ alarm:'353', alarmCode='Malfunction wind measurement device',
+		, description:'The ultrasonic wind measurement device indicates unreliable values.', 
+		reset:'Auto, Local, Remote'
+		, remoteOperation:'1 remote reset.  If doesn t restart call O&amp;M. '
+	},	
+	
+	{ alarm:'354', alarm_2:'354', alarmCode='D/Q moments deviation',
+		, description:'"The calculated nodding (D) and yawing (Q) moments of main shaft relative to the offsets P47.1 and P47.8 exceed the max. tolerance threshold which is defined by P47.12, P52.3 and P52.4 and dependent on wind speed. Reasons for that could be e.g. wrong sensor mounting or shift in MSF proximity sensors, wrong controls parameter or non-adjusted rotor position sensor (incremental encoder at low speed shaft). Together with EM354 also EM294 and it is auto reset three times in 24 hours. After that EM355 is set and power is reduced."', 
+		reset:'Local, Remote'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ codigoGEWE25="355', alarmCode='Power limitation fault adv.controls sensor',
+		, description:'GE25xl (Gen1 WTG) requires the loads benefits of advanced controls, and there is an error detected in an advanced control sensor, the corresponding portion of advanced controls is deactivated automatically and the turbine is curtailed to times rated power. Status message 355 is set to indicate the condition.', 
+		reset:'Local, Remote'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'356', alarmCode='Speed sensor warning CU',
+		, description:'"Some pulses from the incremental encoder are missing
+Warning CU (only SEG CU)."', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'357', alarmCode='Grid voltage drop CU',
+		, description:'Voltage inside LVRT characteristic recognized by CCU.', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ codigoGEWE25="358', alarmCode='Malfunction Triplepitch System',
+		, description:'The pitch rates during an controlled battery drive are not according to an expected range (only 2.5xl).', 
+		reset:'Local, Remote'
+		, remoteOperation:'1 remote reset.  If doesn t restart call O&amp;M. '
+	},	
+	
+	{ alarm:'359', alarmCode='Internal Pitch Mode',
+		, description:'"This status message displays internal special features ofpitch system. It is not ready for operation during this period."', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'360', alarmCode='Internal Pitch Mode Implausible',
+		, description:'"If status message 359 appears in high speed conditions (>500rpm) or if set longer than 120s this is deemed to be implausible and is indicated by status message 360."', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'361', alarm_2:'361', alarmCode='Power limitation advanced controls offsets',
+		, description:'The main shaft flange sensors used for advanced controls has not been calibrated, so power has to be reduced.', 
+		reset:'Local, Remote'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'362', alarm_2:'362', alarmCode='Calibrating ALC scales',
+		, description:'The turbine is using automatic ALC scale calibration and the calibration process is active.', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'363', alarm_2:'363', alarmCode='Mapping ALC hub offsets',
+		, description:'The turbine is in the process of recording main shaft flange sensor offset maps during spinning mode.', 
+		reset:'Auto'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'364', alarmCode='Virtual battery test',
+		, description:'Battery driven shut down with blade angle less than 10 . If no inherited errors the interval for scheduled battery test is reset.', 
+		reset:'Auto'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'365', alarm_2:'365', alarmCode='Service switch pitch implausible',
+		, description:'Service switch pitch is switched on with rotating rotor (resets EM165 "Service Switch Pitch" and automatic pitching is possible).', 
+		reset:'Local, Remote'
+		, remoteOperation:'call O&amp;M if there is nobody working in the WTG'
+	},	
+	
+	{ codigoGEWE25="366', alarmCode='Worsening Aero Balancing',
+		, description:'Only for 2.5 Gen 1: The aerodynamic imbalance measured over the last time period seconds was worse than the imbalance during the preceding time period and was greater than the specification limit. Additionally, occurrence of this fault triggers status message 355 and deactivates the aerodynamic balancing control function, reverting to default pitch offsets.', 
+		reset:'Local, Remote'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'367', alarm_2:'367', alarmCode='CCU fault at abnormal grid condition',
+		, description:'A CCU fault is detected during abnormal grid condition (voltage and/or frequency out of normal range). 
+		This specific CCU fault don't count on downtime then.', 
+		reset:'Auto'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'368', alarm_2:'368', alarmCode='MSF bending limits exceeded',
+		, description:'The main shaft seems to have a higher bending than tolerance limit.', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'369', alarmCode='LVMD undertemperature',
+		, description:'Temperature in the LOW VOLTAGE MAIN DISTRIBUTION (LVMD) too low. For new 60Hz CWE WTGs two temperatures are monitored: 
+		left and right hand side of LVMD.', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'370', alarm_2:'370', alarmCode='Low power',
+		, description:'Message 370 indicates that low power has been detected. Averaged power is thereby compared with a reference characteristic.', 
+		reset:'Auto'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'371', alarm_2:'371', alarmCode='Pitch limitation low power avoidance',
+		, description:'Tip speed ratio (TSR) low power prevention adds an offset to minimum pitch limit that is determined from the ratio of measured tip speed ratio to known optimal tip speed ratio.		Message 371 indicates that the TSR algorithm has limited blade pitch for the past 20 seconds.', 
+		reset:'Auto'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'372', alarm_2:'372', alarmCode='Peak shaver 2 active',
+		, description:'This information message indicates that temperature and pressure conditions indicate usage of peak shaver 2. This feature can avoid low power due to air density dependent effects on the rotor blade.', 
+		reset:'Unkonwn'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'373', alarm_2:'373', alarmCode='Ice detected via low power',
+		, description:'Low power is detected (see message 370) and ambient air temperature very low.', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'374', alarmCode='Ice detected via Scada',
+		, description:'This information message indicates that ice has been detected through a SCADA algorithm by comparing two anemometers.', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'375', alarmCode='Ice detected via tower vibrations',
+		, description:'Same conditions as for EM177 high lateral tower acceleration, but parameters for ice detection configured.', 
+		reset:'Local'
+		, remoteOperation:'3 remote reset.  If doesn t restart call O&amp;M. '
+	},	
+	
+	{ codigoGEWE25="376', alarmCode='Warning Wind Measurement Device',
+		, description:'Ultrasonic wind measurement device with analog interface seems to have a sensor fault. Wind speed is set to the value 5sec before.', 
+		reset:'Auto, Local, Remote'
+		, remoteOperation:''
+	},	
+	
+	{ alarm:'377', alarm_2:'377', alarmCode='NV Ram empty',
+		, description:'At program start the status of NV ram is checked. If it is totally empty then EM377 is indicated. EM61 and EM192 may also occur at the same time. EM377 can only be reset by rebooting the controller.', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'378', alarm_2:'378', alarmCode='NV Ram error',
+		, description:'At program start the status of NV ram is checked. If no DOS file system is detected then EM377 is indicated. NV Ram has to be formatted with M-Manager. EM378 can only be reset by rebooting the controller.', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'379', alarm_2:'', alarmCode='',
+		, description:'Blade angle asymmetry with active BAA option', 
+		reset:'unknown. Solo USA 60Hz'
+		, remoteOperation:'unknown. Solo USA 60Hz'
+	},	
+	
+	{ alarm:'380', alarm_2:'380', alarmCode='Generator CB open',
+		, description:'Generator circuit breaker is open.', 
+		reset:'Auto'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'381', alarm_2:'381', alarmCode='Generator CB tripped',
+		, description:'Indication that at least one of the generator circuit breakers has tripped (DI12.15). The input (DI12.15) configurable via the parameter P26.20 Bit15: (P26.20 Bit15=1, CB switch is normally open, DI12.15=1 triggers EM381; P26.20 Bit15=0, CB switch is normally closed, DI12.15=0 triggers EM381)', 
+		reset:'Local, Remote'
+		, remoteOperation:'1 remote reset.  If doesn t restart call O&amp;M. '
+	},	
+	
+	{ alarm:'382', alarm_2:'382', alarmCode='Protection relay trips/opens the MVSG',
+		, description:'Protection relay in the middle voltage switch gear has tripped and is open.', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ codigoGEWE25="383', alarmCode='Uncontrolled battery test',
+		, description:'There is a test of uncontrolled battery drive without pitch inverter, only 2.5xl.', 
+		reset:'Auto'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'391', alarm_2:'391', alarmCode='Aero balancing saturation',
+		, description:'Saturation sum of pitch offset, only 2.x Gen 1', 
+		reset:'Auto'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'394', alarmCode='Power limitation adv. controls yaw offsets',
+		, description:'Only for 1.5xleEXTEND', 
+		reset:'Local, Remote'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'395', alarmCode='Mapping ALC yaw offsets',
+		, description:'Only for 1.5xleEXTEND', 
+		reset:'Auto'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'396', alarmCode='Error in yaw mapping ALC',
+		, description:'Only for 1.5xleEXTEND', 
+		reset:'Local, Remote'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'397', alarm_2:'397', alarmCode='CCU outer cooling low pressure',
+		, description:'The CCU outer water cooling indicates low pressure', 
+		reset:'Local, Remote'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'400', alarm_2:'400', alarmCode='Check safety chain',
+		, description:'After each hydraulic pre-pressure test (message 282) the safety chain is checked for functionality. This Check can also be triggered by P23.12 = 22 when blades are in feathered position and safety chain closed', 
+		reset:'Auto'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'401', alarm_2:'401', alarmCode='Check safety failed',
+		, description:'The safety chain did not open or close as requested during the test', 
+		reset:'Local'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'402', alarm_2:'402', alarmCode='Wind inertia event at frequency dip',
+		, description:'Optional feature to support weak grids: In case of low grid frequency a torque and power offset is added to the torque demand to CCU for few seconds', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'403', alarmCode='CBM alarm',
+		, description:'CBM is an optional external device. For information about this message	please refer to the CBM documentation', 
+		reset:'Unknown v44'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'404', alarmCode='CBM warning',
+		, description:'CBM is an optional external device. For information about this message	please refer to the CBM documentation', 
+		reset:'Unknown v44'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'405', alarmCode='CBM instrumentation fault',
+		, description:'CBM is an optional external device. For information about this message	please refer to the CBM documentation', 
+		reset:'Unknown v44'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'406', alarmCode='CBM communication fault',
+		, description:'', 
+		reset:'Unknown v44'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ codigoGEWE25="409', alarmCode='Rotor angle plausibility error',
+		, description:'Only for 2.x Gen 1: A deviation in the rotor position has been detected.	This SM will trigger the status message 355 and the turbine will run with limited power. This status message is only reset if a new rotor position offset is introduced or the rotor position supervision based in the bolt pulses is deactivated', 
+		reset:'Local, Remote'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ codigoGEWE25="410', alarmCode='Under voltage reactive power protection active',
+		, description:'N/A, only valid for German WTGs', 
+		reset:'Unknown Solo aplica en Alemania'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ codigoGEWE25="411', alarmCode='Automatic start up after grid outage disabled',
+		, description:'N/A, only valid for German WTGs', 
+		reset:'Unknown Solo aplica en Alemania'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'413', alarm_2:'413', alarmCode='Rotor position not known',
+		, description:'After reboot of WTG controller the rotor position is not correctly indicated because of not yet reaching the reference', 
+		reset:'Auto'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'414', alarm_2:'414', alarmCode='Power reduced operation',
+		, description:'WTG is running with reduced power configured with a parameter', 
+		reset:'Auto'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'415', alarmCode='Yaw reference lost',
+		, description:'', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'417', alarm_2:'417', alarmCode='Holding WFMS commands',
+		, description:'There is a communication error to WindCONTROL (WFMS) and command hold function is enabled', 
+		reset:'Auto'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'418', alarm_2:'418', alarmCode='CCU reports: safety chain open',
+		, description:'Converter unit reports that the Safety Chain is Open', 
+		reset:'Unknown v44'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'419', alarm_2:'419', alarmCode='CCU reports: generator over speed',
+		, description:'Converter unit reports that it has detected generator overspeed', 
+		reset:'Unknown v44'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'420', alarm_2:'420', alarmCode='CCU reports: generator under speed',
+		, description:'Converter unit reports that it has detected generator underspeed', 
+		reset:'Unknown v44'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'421', alarm_2:'421', alarmCode='CCU reports: PLC heartbeat fault',
+		, description:'Converter unit reports that there has been a PLC heartbeat fault', 
+		reset:'Unknown v44'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'422', alarm_2:'422', alarmCode='CCU reports: line CB close fail',
+		, description:'CCU reports that line circuit breaker close failed', 
+		reset:'Unknown v44'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'423', alarm_2:'423', alarmCode='Digital IO inverted or forced',
+		, description:'At least one digital input has been inverted', 
+		reset:'Auto'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'424', alarm_2:'424', alarmCode='System re-initialization after grid outage',
+		, description:'System re-initialization after grid outage, this message is displayed after a grid outage at least until all fieldbus components are alive and for a max time of P8.17 after the components are communicating again. During this message is active the fieldbus components are re-initialized. The re-initialization can be aborted by trigger of manual reset', 
+		reset:'Auto'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'425', alarmCode='Low gearbox oil level detected',
+		, description:'If the gearbox oil level is too low than SM425 is set as a warning. SM425 is displayed	during a defined interval. Then EM51 is set. The monitoring operates in a defined interval of temperatures', 
+		reset:'Auto, Local, Remote'
+		, remoteOperation:'N/A'
+	},	
+	
+	{ alarm:'426', alarm_2:'426', alarmCode='Generator lubrication long term fault',
+		, description:'Generator lubrication long term fault generated after 2 weeks with warning EM301', 
+		reset:'Unknown v44'
+		, remoteOperation:'Local. (This alarm appears two weeks after the 301 warning has appeared, if during these two weeks the warning is not been revised , a local reset is needed.)'
+	},	
+	
+	{ alarm:'427', alarmCode='Hydraulic pump enable time too long warning',
+		, description:'The hydraulic pump has been enabled during a period and no pressure built up. The maximum power will be reduced', 
+		reset:'Unknown v44'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'428', alarmCode='Hydraulic pump interval too short warning',
+		, description:'The hydraulic pump has been enabled during a too short interval six times consecutively. The maximum power will be reduced', 
+		reset:'Unknown v44'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'429', alarmCode='Power de-rating due to mechanical brake test',
+		, description:'The maximum power is limited because the mechanical brake test is pending', 
+		reset:'Unknown v44'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'430', alarmCode='Yaw tooth sensor 1 time-out',
+		, description:'The yaw tooth sensor 1 input had no edge for a defined interval
+		while yaw is active', 
+		reset:'Unknown v44'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'431', alarmCode='Yaw tooth sensor 2 time-out',
+		, description:'The yaw tooth sensor 2 input had no edge for a defined interval while yaw is active', 
+		reset:'Unknown v44'
+		, remoteOperation:'Unknown'
+	},	
+	
+	{ alarm:'432', alarmCode='Pitch system set-up test required',
+		, description:'Pitch system setup test (PSST) is an extended emergency brakesystem test in which the blade limit switches are also tested. PSST is requiredin case a Calibration ID generated by the GE pitch system will change. PSST will also be required if it has been done but it was failed', 
+		reset:'Auto'
+		, remoteOperation:''
+	},
+
+	{ alarm:'433', alarmCode='Pitch system set-up test active',
+		, description:'PSST is being performed. It will appear together with SM135', 
+		reset:'Unknown v44'
+		, remoteOperation:'Unknown'
+	},
+
+	{ alarm:'434', alarmCode='Pitch system set-up test failed for axis 1',
+		, description:'"During a EBST with Pitch System Setup Test for blade 1:- the 0 LS has not been detected- the traverse range, which means the distance between the 0 LS and the 90  limit switch, of blade 1 is not between 99  and 107 , for the 1.5 or between 90  and 99  for the 2.x.This will not abort the test but the PSST will be failed and a new PSST is required, which means SM432 is set"', 
+		reset:'Unknown v44'
+		, remoteOperation:'Unknown'
+	},
+	
+	{ alarm:'435', alarmCode='Pitch system setup test failed for axis 2',
+		, description:'"During a EBST with Pitch System Setup Test for blade 2:- the 0 LS has not been detected- the traverse range, which means the distance between the 0 LS and the 90  limit switch, of blade 2 is not between 99  and 107 , for the 1.5 or between 90  and 99  for the 2.x.This will not abort the test but the PSST will be failed and a new PSST is required, which means SM432 is set"', 
+		reset:'Unknown v44'
+		, remoteOperation:'Unknown'
+	},
+	
+	{ alarm:'436', alarmCode='Pitch system set-up test failed for axis 3',
+		, description:'"During a EBST with Pitch System Set-up Test for blade 3:- the 0 LS has not been detected; - the traverse range, which means the distance between the 0 LS and the 90  limit switch, of blade 3 is not between 99  and 107 , for the 1.5 or between 90  and 99  for the 2.x.This will not abort the test but the PSST will be failed and a new PSST is required, which means SM432 is set"', 
+		reset:'Unknown v44'
+		, remoteOperation:'Unknown'
+	},
+	
+	{ alarm:'437', alarmCode='Pitch system set-up test abort for axis 1',
+		, description:'In a EBST with PSST blade 1 needed more than 40s to drive form the 		90  position to the 0  limit switch. EBST and PSST are aborted', 
+		reset:'Unknown v44'
+		, remoteOperation:''
+	},
+	
+	{ alarm:'438', alarmCode='Pitch system setup test abort for axis 2',
+		, description:'In a EBST with PSST blade 2 needed more than 40s to drive form the 		90  position to the 0  limit switch. EBST and PSST are aborted', 
+		reset:'Unknown v44'
+		, remoteOperation:'Unknown'
+	},
+	
+	{ alarm:'439', alarmCode='Pitch system setup test abort for axis 3',
+		, description:'In a EBST with PSST blade 3 needed more than 40s to drive form the		90  position to the 0  limit switch. EBST and PSST are aborted', 
+		reset:'Unknown v44'
+		, remoteOperation:'Unknown'
+	},
+	
+	{ alarm:'440', alarmCode='Pitch calibration tracking ID changed for axis 1',
+		, description:'For GE Pitch System if a new AEPA card is installed or the pitch gearbox ratio		is changed a new calibration ID will be generated. This will require a new PSST', 
+		reset:'Unknown v44'
+		, remoteOperation:'Unknown'
+	},
+	
+	{ alarm:'441', alarmCode='Pitch calibration tracking ID changed for axis 2',
+		, description:'For GE Pitch System if a new AEPA card is installed or the pitch gearbox ratio		is changed a new calibration ID will be generated. This will require a new PSST', 
+		reset:'Unknown v44'
+		, remoteOperation:'Unknown'
+	},
+	
+	{ alarm:'442', alarmCode='Pitch calibration tracking ID changed for axis 3',
+		, description:'For GE Pitch System if a new AEPA card is installed or the pitch gearbox ratio		is changed a new calibration ID will be generated. This will require a new PSST', 
+		reset:'Unknown v44'
+		, remoteOperation:'Unknown'
+	},
+	
+	{ alarm:'443', alarmCode='Blade Clearance Mode',
+		, description:'Blade clearance operation mode activated. With this mode the pitch angle is 		modified to avoid blade strikes during extreme wind conditions', 
+		reset:'Unknown v44'
+		, remoteOperation:'Unknown'
+	},
+	
+	{ alarm:'445', alarmCode='Directional sector ice dependent shut-down',
+		, description:'Is activated if the Directional sector curtailment is enabled, in order		to control ice shedding direction', 
+		reset:'Unknown v44'
+		, remoteOperation:'Unknown'
+	},
+	
+	{ alarm:'446', alarmCode='Directional sector mode conditions not safe',
+		, description:'Is activated if this feature is enabled and one of these messages are		active: 31, 60, 222, 430 or 431', 
+		reset:'Unknown v44'
+		, remoteOperation:'Unknown'
+	},
+	
+	{ alarm:'447', alarmCode='Pitch rate deviation axis 1',
+		, description:'The pitch rate and acceleration of axis 1 was less than		or equal to zero for defined period during Brake procedure 4 or 6.1', 
+		reset:'Unknown v44'
+		, remoteOperation:'Unknown'
+	},
+	
+	{ alarm:'448', alarmCode='Pitch rate deviation axis 2',
+		, description:'The pitch rate and acceleration of axis 2 was less than		or equal to zero for defined period during Brake procedure 4 or 6.1', 
+		reset:'Unknown v44'
+		, remoteOperation:'Unknown'
+	},
+	
+	{ alarm:'449', alarmCode='Pitch rate deviation axis 3',
+		, description:'The pitch rate and acceleration of axis 3 was less than		or equal to zero for defined period during Brake procedure 4 or 6.1', 
+		reset:'Unknown v44'
+		, remoteOperation:'Unknown'
+	},
+		
+	{ alarm:'451', alarmCode='Manual brake test activated',
+		, description:'The manual brake test was requested and is preparing', 
+		reset:'Unknown v44'
+		, remoteOperation:'Unknown'
+	},
+	
+	{ alarm:'452', alarmCode='Manual brake test not executed due to turbulence',
+		, description:'The manual brake test could not be executed, because the start conditions were not fulfilled', 
+		reset:'Unknown v44'
+		, remoteOperation:'Unknown'
+	},
+	
+	{ alarm:'453', alarmCode='Obstruction light back in operation',
+		, description:'After obstruction light has been repaired and it is back in operation this SM is set for 1 minute.', 
+		reset:'Unknown v44'
+		, remoteOperation:'Unknown'
+	},
+	
+	{ alarm:'454', alarmCode='Over temperature ext. skid control room',
+		, description:'Monitor of external skid rooms detects over temperature, only on 2.xGen1 WTGs. The skid control room over temperature monitoring can be enabled via parameter', 
+		reset:'Unknown v44'
+		, remoteOperation:'Unknown'
+	},
+	
+	{ alarm:'455', alarmCode='Service idle command with OK time',
+		, description:'WTG has been set to OK status by service personnel. WTG stops with procedure 2', 
+		reset:'Unknown v44'
+		, remoteOperation:'Unknown'
+	},
+	
+	{ alarm:'456', alarmCode='Service customer idle command',
+		, description:'WTG has been set to Customer stop status by service personnel. WTG stops with procedure 2', 
+		reset:'Unknown v44'
+		, remoteOperation:'Unknown'
+	},
+	
+	{ alarm:'457', alarmCode='Ambient temperature too high',
+		, description:'Ambient temperature is too high for 60 sec, turbine is stopped.The status message is automatically reset, when ambient temperature is lower again', 
+		reset:'Unknown v44'
+		, remoteOperation:'Unknown'
+	},
+	
+	{ alarm:'458', alarmCode='Secondary brake test pending',
+		, description:'The secondary brake test was not done for more than 1400h', 
+		reset:'Unknown'
+		, remoteOperation:'Unknown'
+	},
+	
+	{ alarm:'459', alarmCode='Over temperature ext. converter room',
+		, description:'Monitor of external converter room detects over temperature, only on 		2.x Gen1 WTGs. The converter room over temperature monitoring can be enabled via parameter', 
+		reset:'Unknown v44'
+		, remoteOperation:'Unknown'
+	},
+	
+	{ alarm:'460', alarmCode='External transformer failure',
+		, description:'External pad mount transformer version #1 indicates over		temperature with digital signal. Turbine is shut-down. No auto reset', 
+		reset:'Unknown v44'
+		, remoteOperation:'Unknown'
+	},
+	
+	{ alarm:'461', alarmCode='Main bearing lubrication system clogged',
+		, description:'If the last successful injection for main bearing lubrication was 		more than a defined period of time ago then SM461 is set. This status message 		can only be reset locally and activates on reset the pump immediately as soon 		as the pump conditions are given (gen. speed and nacelle temp.)', 
+		reset:'Unknown v44'
+		, remoteOperation:'Unknown'
+	},
+	
+	{ alarm:'462', alarmCode='Yaw bearing lubrication system clogged',
+		, description:'If the last successful injection for yaw bearing lubrication was more than 3 month ago then SM462 is set. This status message can only be reset locally and activates on reset the pump immediately as soon as the pump conditions
+		are given (outside temp.)', 
+		reset:'Unknown v44'
+		, remoteOperation:'Unknown'
+	},
+	
+	{ alarm:'473', alarmCode='Drip loop power cable 1 over temperature',
+		, description:'Too high power cable temperature measured with sensor 1', 
+		reset:'Unknown v44'
+		, remoteOperation:'Unknown'
+	},
+	
+	{ alarm:'474', alarmCode='Drip loop power cable 1 over temperature',
+		, description:'Too high power cable temperature measured with sensor 2', 
+		reset:'Unknown v44'
+		, remoteOperation:'Unknown'
+	},
+	
+	{ alarm:'475', alarmCode='Feature expires soon',
+		, description:'A temporary feature is activated but will expire within the next 60 days. This message will be displayed mondays and on the day the feature expires', 
+		reset:'Unknown v44'
+		, remoteOperation:'Unknown'
+	},
+	
+</alarmas>]
