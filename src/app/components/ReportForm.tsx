@@ -76,8 +76,8 @@ const ReportForm = ({ windfarmList, report, title, buttonText }: Props) => {
   }
 
   return (
-    <Paper className="p-6 sm:p-7 lg:p-10" elevation={3}>
-      <Typography className="text-lg">{title}</Typography>
+    <Paper className="p-6 sm:p-7 lg:p-10 min-w-[80%]" elevation={3}>
+      <div className="text-xl font-semibold">{title}</div>
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(onSubmit)} noValidate className="mt-6 grid gap-6">
           <div className="grid grid-cols-3 gap-6">
@@ -130,14 +130,12 @@ const ReportForm = ({ windfarmList, report, title, buttonText }: Props) => {
             type={"textarea"}
             multiline={3}
           />
-          <Button
-            className="bg-black"
+          <button
+            className="bg-green text-lg font-semibold h-10 rounded-2xl hover:bg-[#32f41046]"
             type="submit"
-            variant="contained"
-            disableElevation
           >
             {buttonText}
-          </Button>
+          </button>
         </form>
       </FormProvider>
     </Paper>
