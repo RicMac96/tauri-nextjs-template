@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import mongoose from "mongoose"
 import Windfarm from "./windfarm.model"
+import Tag from "./tag.model"
 
 const reportSchema = new mongoose.Schema(
   {
@@ -26,8 +27,14 @@ const reportSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["Pending", "Finished"],
+      enum: ["Pending", "Ongoing", "Finished"],
     },
+    tag: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Tag",
+      },
+    ],
     owner: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   },
   {

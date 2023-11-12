@@ -10,7 +10,8 @@ import { ReportType, WindfarmType } from "../../../../types/dataType"
 const Index = async ({ params }: { params: { id: string } }) => {
   const windfarmList: WindfarmType[] | undefined = await getWindfarms()
   const report: ReportType | undefined = await getReport(params.id)
-  if (!report || !windfarmList.length) return <div>Results not found</div>
+  if (!report || !windfarmList.length)
+    return <div>{`Results not found for ${params.id}`}</div>
   return (
     <ReportForm
       windfarmList={windfarmList}
