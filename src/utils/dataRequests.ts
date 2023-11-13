@@ -3,13 +3,20 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { ReportTypeLoaded, WindfarmType } from "../../types/dataType"
+import { ReportTypeLoaded, WindfarmType } from '../../types/dataType'
 
-const BACKEND_URL = "http://localhost:3000"
+const BACKEND_URL = 'http://localhost:3000'
+
+const getTags = async <T>(): Promise<T> => {
+  const response = await fetch(`${BACKEND_URL}/api/getTags`, {
+    cache: 'no-cache',
+  })
+  return await response.json()
+}
 
 const getReports = async () => {
   const response = await fetch(`${BACKEND_URL}/api/getReports`, {
-    cache: "no-cache",
+    cache: 'no-cache',
   })
   const data = await response.json()
   return data.sort(
@@ -20,29 +27,29 @@ const getReports = async () => {
 
 const getReport = async (id: string) => {
   const response = await fetch(`${BACKEND_URL}/api/getReport`, {
-    method: "POST",
+    method: 'POST',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify(id),
-    cache: "no-cache",
+    cache: 'no-cache',
   })
   return await response.json()
 }
 
 const getWindfarms = async () => {
   const response = await fetch(`${BACKEND_URL}/api/getWindfarms`, {
-    cache: "force-cache",
+    cache: 'force-cache',
   })
   const data: WindfarmType[] = await response.json()
   return data.sort((a: any, b: any) => a.Name.localeCompare(b.Name))
 }
 
-const postReport = async (data: any) => {
-  const response = await fetch("/api/postReport", {
-    method: "POST",
+const postData = async <T>(url: string, data: any): Promise<T> => {
+  const response = await fetch(`/api${url}`, {
+    method: 'POST',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify(data),
   })
@@ -50,14 +57,14 @@ const postReport = async (data: any) => {
 }
 
 const updateReport: any = async (data: any) => {
-  const response = await fetch("/api/updateReport", {
-    method: "PATCH",
+  const response = await fetch('/api/updateReport', {
+    method: 'PATCH',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify(data),
   })
   return await response.json()
 }
 
-export { getReport, getReports, getWindfarms, postReport, updateReport }
+export { getReport, getReports, getTags, getWindfarms, postData, updateReport }

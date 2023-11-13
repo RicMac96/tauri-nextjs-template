@@ -12,7 +12,7 @@ const searchWithinObject = (searchTerm: string, arrayOfObjects: any) => {
     for (const key in object) {
       const value = object[key]
 
-      if (typeof value === "object" && value !== null) {
+      if (typeof value === 'object' && value !== null) {
         // If the property is an object, recursively search its properties
         if (deepSearch(value)) {
           return true // Found a match in nested properties

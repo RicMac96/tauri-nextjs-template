@@ -1,7 +1,7 @@
-"use client"
-import React, { useState } from "react"
+'use client'
+import React, { useState } from 'react'
 
-import { MyGlobalContext } from "@/utils/context"
+import { MyGlobalContext } from '@/utils/context'
 
 export default function ParentProvider({ children }: { children: React.ReactNode }) {
   const [filter, setFilter] = useState<string | undefined>()

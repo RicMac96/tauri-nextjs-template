@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Switch } from "@mui/material"
-import { Controller, useFormContext } from "react-hook-form"
+import { Switch } from '@mui/material'
+import { Controller, useFormContext } from 'react-hook-form'
 
-import { classNames } from "@/utils/css"
+import { classNames } from '@/utils/css'
 
 interface PropsType {
   label: string
@@ -11,7 +11,7 @@ interface PropsType {
   className?: string
   disabled?: boolean
   rules?: any // validation rules
-  size?: "small" | "medium" | undefined
+  size?: 'small' | 'medium' | undefined
 }
 
 const SwitchField = ({
@@ -27,7 +27,7 @@ const SwitchField = ({
   const value = watch(name)
 
   return (
-    <div className={classNames("-ml-3 w-full", className)}>
+    <div className={classNames('-ml-3 w-full', className)}>
       <Controller
         name={name}
         control={control}
@@ -43,7 +43,7 @@ const SwitchField = ({
             size={size}
             placeholder={label}
             inputProps={{
-              className: "w-full h-full",
+              className: 'w-full h-full',
             }}
             checked={value}
           />

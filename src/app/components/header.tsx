@@ -1,13 +1,13 @@
-"use client"
+'use client'
 
-import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import Image from "next/image"
-import Link from "next/link"
+import { faGear } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import Image from 'next/image'
+import Link from 'next/link'
 
-import { useGlobalContext } from "@/utils/context"
+import { useGlobalContext } from '@/utils/context'
 
-const linkClass = "hover:bg-gray-600 hover:text-black rounded-full p-3"
+const linkClass = 'hover:bg-gray-600 hover:text-black rounded-full p-3'
 
 export default function Header() {
   const { setFilter } = useGlobalContext()
@@ -38,12 +38,18 @@ export default function Header() {
             setFilter(e.target.value)
           }}
         />
-        <FontAwesomeIcon
+        {/* <FontAwesomeIcon
           className="h-7 text-[#33F420]"
           // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           icon={faMagnifyingGlass}
           flip="horizontal"
-        />
+        /> */}
+        <Link href="/settings" passHref>
+          <FontAwesomeIcon
+            icon={faGear}
+            className="h-7 text-gray-500 hover:text-gray-600"
+          />
+        </Link>
       </div>
     </div>
   )

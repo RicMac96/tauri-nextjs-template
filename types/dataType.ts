@@ -1,6 +1,6 @@
-import { Types } from "mongoose"
+import { Types } from 'mongoose'
 
-export type severity = "Low" | "Medium" | "High"
+export type severity = 'Low' | 'Medium' | 'High'
 
 export interface ReportType {
   windfarm: WindfarmType
@@ -37,4 +37,9 @@ export interface WindfarmType {
   Country?: string
   Name?: string
   PI?: string
+}
+
+export interface TagType {
+  _id: Types.ObjectId
+  tag: string
 }

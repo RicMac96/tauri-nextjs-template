@@ -5,18 +5,18 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-"use client"
+'use client'
 
-import { Button, MenuItem, Paper, Typography } from "@mui/material"
-import { useRouter } from "next/navigation"
-import { useEffect } from "react"
-import { FormProvider, useForm } from "react-hook-form"
+import { MenuItem, Paper } from '@mui/material'
+import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
+import { FormProvider, useForm } from 'react-hook-form'
 
-import Field from "@/app/components/forms/Field"
-import capitalizeText from "@/utils/capitalize"
-import { postReport, updateReport } from "@/utils/dataRequests"
+import Field from '@/app/components/forms/Field'
+import capitalizeText from '@/utils/capitalize'
+import { postData, updateReport } from '@/utils/dataRequests'
 
-import { ReportType, WindfarmType } from "../../../types/dataType"
+import { ReportType, WindfarmType } from '../../../types/dataType'
 
 interface Props {
   windfarmList: WindfarmType[]
@@ -29,11 +29,11 @@ const ReportForm = ({ windfarmList, report, title, buttonText }: Props) => {
   const router = useRouter()
   const methods = useForm({
     defaultValues: {
-      windfarm: "",
-      severity: "Low",
-      subject: "",
+      windfarm: '',
+      severity: 'Low',
+      subject: '',
       date: new Date().toLocaleString(),
-      text: "",
+      text: '',
     },
   })
 
@@ -41,16 +41,16 @@ const ReportForm = ({ windfarmList, report, title, buttonText }: Props) => {
     try {
       const response = report
         ? await updateReport({ id: report._id, ...data })
-        : await postReport(data)
+        : await postData('/uploadReport', data)
 
       if (response.ok) {
-        router.push("/")
+        router.push('/')
       } else {
         // Handle errors here
-        console.error("Error:", response.statusText)
+        console.error('Error:', response.statusText)
       }
     } catch (error) {
-      console.error("Error:", error)
+      console.error('Error:', error)
     }
   }
 
@@ -61,7 +61,7 @@ const ReportForm = ({ windfarmList, report, title, buttonText }: Props) => {
       reset({
         windfarm: report.windfarm._id?.toString(),
         severity: report.severity,
-        subject: report.subject ?? "",
+        subject: report.subject ?? '',
         date: report.date,
         text: report.text,
       })
@@ -89,7 +89,7 @@ const ReportForm = ({ windfarmList, report, title, buttonText }: Props) => {
               type="text"
               options={windfarmList.map((windfarm, index) => (
                 <MenuItem value={windfarm._id?.toString()} key={index}>
-                  {capitalizeText(windfarm.Name ?? "")}
+                  {capitalizeText(windfarm.Name ?? '')}
                 </MenuItem>
               ))}
             />
@@ -127,7 +127,7 @@ const ReportForm = ({ windfarmList, report, title, buttonText }: Props) => {
             name="text"
             label="Report"
             required={true}
-            type={"textarea"}
+            type={'textarea'}
             multiline={3}
           />
           <button

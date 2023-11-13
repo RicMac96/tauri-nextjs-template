@@ -2,16 +2,16 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-"use client"
+'use client'
 
-import { useEffect, useState } from "react"
+import { useEffect, useState } from 'react'
 
-import { useGlobalContext } from "@/utils/context"
-import { getReports } from "@/utils/dataRequests"
-import searchWithinObject from "@/utils/searchWithin"
+import { useGlobalContext } from '@/utils/context'
+import { getReports } from '@/utils/dataRequests'
+import searchWithinObject from '@/utils/searchWithin'
 
-import { ReportType } from "../../../types/dataType"
-import ReportMainMenu from "./reportMainView"
+import { ReportType } from '../../../types/dataType'
+import ReportMainMenu from './reportMainView'
 
 const HomeLayout = () => {
   const { filter } = useGlobalContext()
@@ -22,12 +22,12 @@ const HomeLayout = () => {
   useEffect(() => {
     async function fetchReports() {
       try {
-        console.log("Reports updated")
+        console.log('Reports updated')
         const data = await getReports()
         setReports(data)
         setFullList(data)
       } catch (error) {
-        console.error("Error fetching reports:", error)
+        console.error('Error fetching reports:', error)
       }
     }
     fetchReports()

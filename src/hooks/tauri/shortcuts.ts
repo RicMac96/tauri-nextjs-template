@@ -3,8 +3,8 @@ import {
   register,
   ShortcutHandler,
   unregister,
-} from "@tauri-apps/api/globalShortcut"
-import { useEffect } from "react"
+} from '@tauri-apps/api/globalShortcut'
+import { useEffect } from 'react'
 
 /**
  * A React hook to register global shortcuts using Tauri's globalShortcut API.

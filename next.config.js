@@ -3,8 +3,8 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   experimental: {
-    esmExternals: "loose", // <-- add this
-    serverComponentsExternalPackages: ["mongoose"], // <-- and this
+    esmExternals: 'loose', // <-- add this
+    serverComponentsExternalPackages: ['mongoose'], // <-- and this
   },
   images: {
     unoptimized: true,

@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { TextField } from "@mui/material"
-import React from "react"
-import { Controller, useFormContext } from "react-hook-form"
+import { TextField } from '@mui/material'
+import React from 'react'
+import { Controller, useFormContext } from 'react-hook-form'
 
-import { classNames } from "@/utils/css"
-import get from "@/utils/get"
+import { classNames } from '@/utils/css'
+import get from '@/utils/get'
 
 interface PropsType {
   label: string | JSX.Element
@@ -21,9 +21,9 @@ interface PropsType {
   multiline?: number
   rules?: any // validation rules
   multiple?: boolean
-  type?: "password" | "number" | "text" | "textarea" | "date" | "file" // anything else for now is detected by default
-  variant?: "filled" | "outlined" | "standard"
-  size?: "small" | "medium" | undefined
+  type?: 'password' | 'number' | 'text' | 'textarea' | 'date' | 'file' // anything else for now is detected by default
+  variant?: 'filled' | 'outlined' | 'standard'
+  size?: 'small' | 'medium' | undefined
   topLabel?: boolean
   startAdornment?: JSX.Element
   endAdornment?: JSX.Element
@@ -84,24 +84,24 @@ const Field = ({
           ref={ref}
           label={label}
           InputLabelProps={{
-            className: topLabel ? "whitespace-nowrap" : "sr-only",
+            className: topLabel ? 'whitespace-nowrap' : 'sr-only',
             shrink: true,
             required: false, // remove the asterisk
           }}
           inputProps={{
             style: {
-              boxShadow: "none",
+              boxShadow: 'none',
             },
             className: classNames(
               inputClassName,
-              "bg-transparent px-7 py-3 focus:bg-white",
+              'bg-transparent px-7 py-3 focus:bg-white',
             ),
           }}
           InputProps={{
             className: classNames(
               inputDivClassName,
-              "text-[#272B30] p-0",
-              Boolean(get(errors, name)) && "border-[#DC2020]",
+              'text-[#272B30] p-0',
+              Boolean(get(errors, name)) && 'border-[#DC2020]',
             ),
             startAdornment,
             endAdornment,

@@ -11,8 +11,10 @@
     "project": ["./tsconfig.json"]
   },
   "ignorePatterns": ["**/*model.js"],
-  "plugins": ["@typescript-eslint", "simple-import-sort", "prettier"],
+  "plugins": ["@typescript-eslint", "simple-import-sort", "prettier", "unused-imports"],
   "rules": {
+    "prettier/prettier": ["error", { "endOfLine": "auto", "singleQuote": true }],
+    "react/require-default-props": "off", // Allow non-defined react props as undefined
     "eqeqeq": "error",
     "no-else-return": "error",
     "no-implicit-coercion": ["error", { "disallowTemplateShorthand": true }],
@@ -28,7 +30,13 @@
     "radix": ["error", "always"],
     "simple-import-sort/imports": "error",
     "simple-import-sort/exports": "error",
-    "prettier/prettier": "error",
-    "react-hooks/exhaustive-deps": "error"
+    "react-hooks/exhaustive-deps": "error",
+    "@typescript-eslint/comma-dangle": "off", // Avoid conflict rule between Eslint and Prettier
+    "import/prefer-default-export": "off", // Named export is easier to refactor automatically
+    "@typescript-eslint/no-unused-vars": "off",
+    "unused-imports/no-unused-imports": "error",
+    "unused-imports/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+    "no-underscore-dangle": "off",
+    "no-empty": ["error", { "allowEmptyCatch": true }]
   }
 }

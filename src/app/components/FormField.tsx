@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/ban-types */
-import React from "react"
-import { FieldError } from "react-hook-form"
+import React from 'react'
+import { FieldError } from 'react-hook-form'
 
 interface Option {
   name: string
@@ -49,12 +49,12 @@ const FormField = ({
     <div className={`mb-5 px-3 ${className}`}>
       <label className={`mb-2 block font-semibold text-zinc-700 ${labelClassName}`}>
         {label}
-        {validation?.required && " *"}
+        {validation?.required && ' *'}
       </label>
-      {type === "textarea" && (
+      {type === 'textarea' && (
         <textarea {...register(name, validation)} className="h-32 w-full rounded" />
       )}
-      {type === "select" && (
+      {type === 'select' && (
         <select {...register(name, validation)} className="w-full rounded">
           {options?.map((option) => (
             <option key={option.value} value={option.value}>
@@ -63,7 +63,7 @@ const FormField = ({
           ))}
         </select>
       )}
-      {!["textarea", "select"].includes(type) && (
+      {!['textarea', 'select'].includes(type) && (
         <input
           type={type}
           {...register(name, validation)}

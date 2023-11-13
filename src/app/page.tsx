@@ -1,6 +1,6 @@
-"use client"
+'use client'
 
-import HomeLayout from "./components/HomeLayout"
+import HomeLayout from './components/HomeLayout'
 
 const Home = () => {
   return (

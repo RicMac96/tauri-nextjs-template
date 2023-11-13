@@ -4,6 +4,6 @@ const emailRegex =
 
 const emailValidation = {
   value: emailRegex,
-  message: "Please provide a valid e-mail.",
+  message: 'Please provide a valid e-mail.',
 }
 export default emailValidation

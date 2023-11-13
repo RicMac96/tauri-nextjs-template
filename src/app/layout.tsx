@@ -1,19 +1,19 @@
-import "./globals.css"
+import './globals.css'
 
-import type { Metadata } from "next"
-import { Inter } from "next/font/google"
+import type { Metadata } from 'next'
+import { Inter } from 'next/font/google'
 
-import Footer from "./components/footer"
-import Header from "./components/header"
-import ParentProvider from "./components/ParentWrapper"
+import Footer from './components/footer'
+import Header from './components/header'
+import ParentProvider from './components/ParentWrapper'
 
-const inter = Inter({ subsets: ["latin"] })
+const inter = Inter({ subsets: ['latin'] })
 
 //const filterContext: String | undefined = createContext();
 
 export const metadata: Metadata = {
-  title: "OpAux",
-  description: "Operator Auxiliar Tools",
+  title: 'OpAux',
+  description: 'Operator Auxiliar Tools',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

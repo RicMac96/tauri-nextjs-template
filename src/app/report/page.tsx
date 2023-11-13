@@ -1,7 +1,7 @@
-import ReportForm from "@/app/components/ReportForm"
-import { getWindfarms } from "@/utils/dataRequests"
+import ReportForm from '@/app/components/ReportForm'
+import { getWindfarms } from '@/utils/dataRequests'
 
-import { WindfarmType } from "../../../types/dataType"
+import { WindfarmType } from '../../../types/dataType'
 
 const index = async () => {
   const windfarmList: WindfarmType[] = await getWindfarms()

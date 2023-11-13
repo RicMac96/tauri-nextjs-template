@@ -3,7 +3,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 const get = (value: any, path: string, defaultValue?: any) => {
-  const val = path.split(".").reduce((acc, v) => {
+  const val = path.split('.').reduce((acc, v) => {
     try {
       // eslint-disable-next-line no-param-reassign
       acc = acc[v]
@@ -13,7 +13,7 @@ const get = (value: any, path: string, defaultValue?: any) => {
     return acc
   }, value)
 
-  if (typeof val === "undefined") {
+  if (typeof val === 'undefined') {
     return defaultValue
   }
 

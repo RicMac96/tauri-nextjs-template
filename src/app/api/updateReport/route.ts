@@ -3,8 +3,8 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import dbConnect from "../../../../lib/dbConnect"
-import Report from "../../../../models/report.model"
+import dbConnect from '../../../../lib/dbConnect'
+import Report from '../../../../models/report.model'
 
 export async function PATCH(req: any) {
   const report = await req.json()

@@ -5,7 +5,7 @@
  */
 export default function capitalizeText(text: string) {
   // Split the text into words
-  const words = text.split(" ")
+  const words = text.split(' ')
 
   // Capitalize the first character of each word and make the rest lowercase
   const capitalizedWords = words.map((word: string) => {
@@ -19,5 +19,5 @@ export default function capitalizeText(text: string) {
   })
 
   // Join the words back together with spaces
-  return capitalizedWords.join(" ")
+  return capitalizedWords.join(' ')
 }

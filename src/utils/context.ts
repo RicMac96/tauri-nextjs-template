@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import { createContext, useContext } from "react"
+import { createContext, useContext } from 'react'
 export interface GlobalContent {
   filter?: string | undefined
   setFilter: (c: string | undefined) => void
