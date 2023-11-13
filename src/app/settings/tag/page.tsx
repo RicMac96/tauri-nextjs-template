@@ -22,7 +22,7 @@ const Tag = async () => {
       <Paper className="p-7">
         <div className="grid">
           {tagList.map((item) => (
-            <div key={item._id.toString()}>{item.tag}</div>
+            <div key={item._id?.toString()}>{item.tag}</div>
           ))}
         </div>
       </Paper>

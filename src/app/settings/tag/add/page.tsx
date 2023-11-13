@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 'use client'
 
 import { Paper } from '@mui/material'
@@ -21,7 +22,10 @@ const AddTag = () => {
 
   const SaveTags = async () => {
     try {
-      const data: TagType[] = await postData<TagType[]>('/uploadTags', list)
+      const data: TagType[] = await postData<TagType[]>(
+        '/uploadTags',
+        list.map((tag) => ({ tag })),
+      )
       console.log(data)
     } catch (error) {
       console.log(error)

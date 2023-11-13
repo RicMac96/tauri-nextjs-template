@@ -46,6 +46,7 @@ const getWindfarms = async () => {
 }
 
 const postData = async <T>(url: string, data: any): Promise<T> => {
+  console.log('postData')
   const response = await fetch(`/api${url}`, {
     method: 'POST',
     headers: {

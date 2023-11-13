@@ -40,6 +40,6 @@ export interface WindfarmType {
 }
 
 export interface TagType {
-  _id: Types.ObjectId
+  _id?: Types.ObjectId
   tag: string
 }
