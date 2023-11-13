@@ -1,5 +1,5 @@
-import { Paper } from '@mui/material'
-import Link from 'next/link'
+import { Paper } from '@mui/material';
+import Link from 'next/link';
 
 const Settings = () => {
   return (
@@ -18,7 +18,7 @@ const Settings = () => {
         </div>
       </Paper>
     </div>
-  )
-}
+  );
+};
 
-export default Settings
+export default Settings;

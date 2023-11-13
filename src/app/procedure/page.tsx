@@ -1,12 +1,18 @@
-import ReportForm from '@/app/components/ReportForm'
-import { getWindfarms } from '@/utils/dataRequests'
+import ProcedureForm from '@/components/ProcedureForm';
+import { getTags, getWindfarms } from '@/utils/dataRequests';
 
-import { WindfarmType } from '../../../types/dataType'
+import { TagType, WindfarmType } from '../../../types/dataType';
 
 const index = async () => {
-  const windfarmList: WindfarmType[] = await getWindfarms()
+  const windfarmList: WindfarmType[] = await getWindfarms();
+  const tags: TagType[] = await getTags<TagType[]>();
   return (
-    <ReportForm windfarmList={windfarmList} title="Create Report" buttonText="Save" />
-  )
-}
-export default index
+    <ProcedureForm
+      windfarmList={windfarmList}
+      title="Create Procedure"
+      tags={tags}
+      buttonText="Save"
+    />
+  );
+};
+export default index;

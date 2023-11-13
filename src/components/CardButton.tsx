@@ -1,7 +1,7 @@
 interface CardButtonProps {
-  onClick: () => void
-  title: string
-  description: string
+  onClick: () => void;
+  title: string;
+  description: string;
 }
 
 export const CardButton: React.FC<CardButtonProps> = ({
@@ -16,4 +16,4 @@ export const CardButton: React.FC<CardButtonProps> = ({
     <h2 className="mb-4 text-2xl">{title} &rarr;</h2>
     <p className="m-0 text-xl">{description}</p>
   </button>
-)
+);

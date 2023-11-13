@@ -5,28 +5,28 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-'use client'
+'use client';
 
-import { MenuItem, Paper } from '@mui/material'
-import { useRouter } from 'next/navigation'
-import { useEffect } from 'react'
-import { FormProvider, useForm } from 'react-hook-form'
+import { MenuItem, Paper } from '@mui/material';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
 
-import Field from '@/app/components/forms/Field'
-import capitalizeText from '@/utils/capitalize'
-import { postData, updateReport } from '@/utils/dataRequests'
+import Field from '@/components/forms/Field';
+import capitalizeText from '@/utils/capitalize';
+import { postData, updateData } from '@/utils/dataRequests';
 
-import { ReportType, WindfarmType } from '../../../types/dataType'
+import { ReportType, WindfarmType } from '../../types/dataType';
 
 interface Props {
-  windfarmList: WindfarmType[]
-  report?: ReportType
-  title: string
-  buttonText: string
+  windfarmList: WindfarmType[];
+  report?: ReportType;
+  title: string;
+  buttonText: string;
 }
 
 const ReportForm = ({ windfarmList, report, title, buttonText }: Props) => {
-  const router = useRouter()
+  const router = useRouter();
   const methods = useForm({
     defaultValues: {
       windfarm: '',
@@ -35,26 +35,26 @@ const ReportForm = ({ windfarmList, report, title, buttonText }: Props) => {
       date: new Date().toLocaleString(),
       text: '',
     },
-  })
+  });
 
   async function onSubmit(data: any) {
     try {
-      const response = report
-        ? await updateReport({ id: report._id, ...data })
-        : await postData('/uploadReport', data)
+      const response: any = report
+        ? await updateData('/uploadReport', { id: report._id, ...data })
+        : await postData('/postReport', data);
 
       if (response.ok) {
-        router.push('/')
+        router.push('/');
       } else {
         // Handle errors here
-        console.error('Error:', response.statusText)
+        console.error('Error:', response.statusText);
       }
     } catch (error) {
-      console.error('Error:', error)
+      console.error('Error:', error);
     }
   }
 
-  const { handleSubmit, reset } = methods
+  const { handleSubmit, reset } = methods;
 
   useEffect(() => {
     if (report) {
@@ -64,16 +64,16 @@ const ReportForm = ({ windfarmList, report, title, buttonText }: Props) => {
         subject: report.subject ?? '',
         date: report.date,
         text: report.text,
-      })
+      });
     }
-  }, [report])
+  }, [report]);
 
   //* remove anoying error with still ongoing correction from devs
-  const error = console.error
+  const error = console.error;
   console.error = (...args: any) => {
-    if (/defaultProps/.test(args[0])) return
-    error(...args)
-  }
+    if (/defaultProps/.test(args[0])) return;
+    error(...args);
+  };
 
   return (
     <Paper className="p-6 sm:p-7 lg:p-10 min-w-[80%]" elevation={3}>
@@ -139,6 +139,6 @@ const ReportForm = ({ windfarmList, report, title, buttonText }: Props) => {
         </form>
       </FormProvider>
     </Paper>
-  )
-}
-export default ReportForm
+  );
+};
+export default ReportForm;

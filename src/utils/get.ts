@@ -6,18 +6,18 @@ const get = (value: any, path: string, defaultValue?: any) => {
   const val = path.split('.').reduce((acc, v) => {
     try {
       // eslint-disable-next-line no-param-reassign
-      acc = acc[v]
+      acc = acc[v];
     } catch (e) {
-      return defaultValue
+      return defaultValue;
     }
-    return acc
-  }, value)
+    return acc;
+  }, value);
 
   if (typeof val === 'undefined') {
-    return defaultValue
+    return defaultValue;
   }
 
-  return val
-}
+  return val;
+};
 
-export default get
+export default get;

@@ -1,27 +1,24 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
-import mongoose from "mongoose"
-import Windfarm from "./windfarm.model"
-import Tag from "./tag.model"
+import mongoose from 'mongoose';
+import Windfarm from './windfarm.model';
+import Tag from './tag.model';
 
 const procedureSchema = new mongoose.Schema({
-  title: {
-    type: String,
-    require: true,
-  },
   windfarm: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Windfarm",
+      ref: 'Windfarm',
     },
   ],
   severity: {
     type: String,
     required: true,
-    enum: ["Low", "Medium", "High"],
-    default: "Low",
+    enum: ['', 'Low', 'Medium', 'High'],
+    default: '',
   },
-  subject: {
+  title: {
     type: String,
+    required: true,
   },
   text: {
     type: String,
@@ -30,16 +27,16 @@ const procedureSchema = new mongoose.Schema({
   date: {
     type: String,
   },
-  tag: [
+  tags: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Tag",
+      ref: 'Tag',
     },
   ],
-  owner: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-})
+  owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+});
 
 const Procedure =
-  mongoose.models.Procedure || mongoose.model("Procedure", procedureSchema)
+  mongoose.models.Procedure || mongoose.model('Procedure', procedureSchema);
 
-export default Procedure
+export default Procedure;

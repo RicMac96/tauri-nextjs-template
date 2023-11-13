@@ -1,15 +1,15 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
-import { Paper } from '@mui/material'
-import Link from 'next/link'
+import { Paper } from '@mui/material';
+import Link from 'next/link';
 
-import capitalizeText from '@/utils/capitalize'
-import formatDataToPT from '@/utils/formatDataToPT'
+import capitalizeText from '@/utils/capitalize';
+import formatDataToPT from '@/utils/formatDataToPT';
 
-import { ReportType } from '../../../types/dataType'
-import { classNames } from '../../utils/css'
+import { ReportType } from '../../types/dataType';
+import { classNames } from '../utils/css';
 
 interface Props {
-  report: ReportType
+  report: ReportType;
 }
 
 export default function ReportMainMenu({ report }: Props) {
@@ -46,5 +46,5 @@ export default function ReportMainMenu({ report }: Props) {
         )}
       </Link>
     </Paper>
-  )
+  );
 }

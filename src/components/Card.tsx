@@ -1,7 +1,7 @@
 interface CardProps {
-  url: string
-  title: string
-  description: string
+  url: string;
+  title: string;
+  description: string;
 }
 
 export const Card: React.FC<CardProps> = ({ url, title, description }: CardProps) => (
@@ -14,4 +14,4 @@ export const Card: React.FC<CardProps> = ({ url, title, description }: CardProps
     <h2 className="mb-4 text-2xl">{title} &rarr;</h2>
     <p className="m-0 text-xl">{description}</p>
   </a>
-)
+);

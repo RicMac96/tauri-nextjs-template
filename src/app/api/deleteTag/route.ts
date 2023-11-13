@@ -3,11 +3,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import dbConnect from '../../../../lib/dbConnect';
-import Report from '../../../../models/report.model';
+import Tag from '../../../../models/tag.model';
 
-export async function POST(req: any) {
+export async function DELETE(req: any) {
   const id = await req.json();
   await dbConnect();
-  const res = await Report.findById(id).populate('windfarm');
+  const res = await Tag.findByIdAndDelete(id);
   return Response.json(res);
 }

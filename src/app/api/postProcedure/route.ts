@@ -3,12 +3,13 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import dbConnect from '../../../../lib/dbConnect';
-import Report from '../../../../models/report.model';
+import Procedure from '../../../../models/procedure.model';
 
 export async function POST(req: any) {
-  const report = await req.json();
+  const procedure = await req.json();
+  console.log(procedure);
   await dbConnect();
-  const result = await Report.create(report);
+  const result = await Procedure.create(procedure);
   if (!result) {
     return Response.json({ ok: false });
   }

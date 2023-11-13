@@ -1,35 +1,35 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/ban-types */
-import React from 'react'
-import { FieldError } from 'react-hook-form'
+import React from 'react';
+import { FieldError } from 'react-hook-form';
 
 interface Option {
-  name: string
-  value: any
+  name: string;
+  value: any;
 }
 interface FormFieldInt {
-  label: string
-  type: string
-  register: Function // to complex to define Function
-  name: string
+  label: string;
+  type: string;
+  register: Function; // to complex to define Function
+  name: string;
   validation?: {
-    required?: string
+    required?: string;
     minLength?: {
-      value: number
-      message: string
-    }
+      value: number;
+      message: string;
+    };
     pattern?: {
-      value: RegExp
-      message: string
-    }
-  }
-  options?: Option[]
-  error?: FieldError
-  className: string
-  labelClassName?: string
-  inputClassName?: string
-  placeholder?: string
+      value: RegExp;
+      message: string;
+    };
+  };
+  options?: Option[];
+  error?: FieldError;
+  className: string;
+  labelClassName?: string;
+  inputClassName?: string;
+  placeholder?: string;
 }
 
 const FormField = ({
@@ -73,7 +73,7 @@ const FormField = ({
       )}
       <p className="text-red-600">{error?.message}</p>
     </div>
-  )
-}
+  );
+};
 
-export { FormField }
+export { FormField };

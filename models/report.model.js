@@ -1,19 +1,19 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
-import mongoose from "mongoose"
-import Windfarm from "./windfarm.model"
-import Tag from "./tag.model"
+import mongoose from 'mongoose';
+import Windfarm from './windfarm.model';
+import Tag from './tag.model';
 
 const reportSchema = new mongoose.Schema(
   {
     windfarm: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Windfarm",
+      ref: 'Windfarm',
     },
     severity: {
       type: String,
       required: true,
-      enum: ["Low", "Medium", "High"],
-      default: "Low",
+      enum: ['', 'Low', 'Medium', 'High'],
+      default: '',
     },
     text: {
       type: String,
@@ -27,22 +27,22 @@ const reportSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["Pending", "Ongoing", "Finished"],
+      enum: ['Pending', 'Ongoing', 'Finished'],
     },
     tag: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Tag",
+        ref: 'Tag',
       },
     ],
-    owner: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   },
   {
     timestamps: true, // This adds createdAt and updatedAt fields
-    collection: "reports",
+    collection: 'reports',
   },
-)
+);
 
-const Report = mongoose.models.Report || mongoose.model("Report", reportSchema)
+const Report = mongoose.models.Report || mongoose.model('Report', reportSchema);
 
-export default Report
+export default Report;

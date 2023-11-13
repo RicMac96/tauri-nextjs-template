@@ -1,33 +1,33 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { TextField } from '@mui/material'
-import React from 'react'
-import { Controller, useFormContext } from 'react-hook-form'
+import { TextField } from '@mui/material';
+import React from 'react';
+import { Controller, useFormContext } from 'react-hook-form';
 
-import { classNames } from '@/utils/css'
-import get from '@/utils/get'
+import { classNames } from '@/utils/css';
+import get from '@/utils/get';
 
 interface PropsType {
-  label: string | JSX.Element
-  name: string
-  required: boolean
-  className?: string
-  inputDivClassName?: string // style the div parent to <input>
-  inputClassName?: string // style the <input>
-  options?: JSX.Element[] // list of options to select
-  autoFocus?: boolean
-  disabled?: boolean
-  multiline?: number
-  rules?: any // validation rules
-  multiple?: boolean
-  type?: 'password' | 'number' | 'text' | 'textarea' | 'date' | 'file' // anything else for now is detected by default
-  variant?: 'filled' | 'outlined' | 'standard'
-  size?: 'small' | 'medium' | undefined
-  topLabel?: boolean
-  startAdornment?: JSX.Element
-  endAdornment?: JSX.Element
-  ref?: React.Ref<HTMLInputElement>
+  label: string | JSX.Element;
+  name: string;
+  required: boolean;
+  className?: string;
+  inputDivClassName?: string; // style the div parent to <input>
+  inputClassName?: string; // style the <input>
+  options?: JSX.Element[]; // list of options to select
+  autoFocus?: boolean;
+  disabled?: boolean;
+  multiline?: number;
+  rules?: any; // validation rules
+  multiple?: boolean;
+  type?: 'password' | 'number' | 'text' | 'textarea' | 'date' | 'file'; // anything else for now is detected by default
+  variant?: 'filled' | 'outlined' | 'standard';
+  size?: 'small' | 'medium' | undefined;
+  topLabel?: boolean;
+  startAdornment?: JSX.Element;
+  endAdornment?: JSX.Element;
+  ref?: React.Ref<HTMLInputElement>;
 }
 
 const Field = ({
@@ -50,9 +50,9 @@ const Field = ({
   startAdornment,
   endAdornment,
 }: PropsType) => {
-  const methods = useFormContext()
-  const { control, formState } = methods
-  const { errors } = formState
+  const methods = useFormContext();
+  const { control, formState } = methods;
+  const { errors } = formState;
 
   return (
     <Controller
@@ -111,11 +111,11 @@ const Field = ({
         </TextField>
       )}
     />
-  )
-}
+  );
+};
 
 Field.defaultProps = {
   required: false,
-}
+};
 
-export default Field
+export default Field;
