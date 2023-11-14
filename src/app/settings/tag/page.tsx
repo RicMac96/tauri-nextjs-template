@@ -1,18 +1,33 @@
+/* eslint-disable @typescript-eslint/no-floating-promises */
+'use client';
+
 import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Paper } from '@mui/material';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 import { TagType } from 'types/dataType';
 
 import TagItem from '@/components/TagItem';
-import { getTags } from '@/utils/dataRequests';
+import { getData } from '@/utils/dataRequests';
 
-const Tag = async () => {
-  const tagList: TagType[] = await getTags<TagType[]>();
-  /*   if (!tagList.length) {
-    return <div>No Tags defined</div>
-  } */
+const Tag = () => {
+  const [tagList, setTagList] = useState<TagType[]>();
+  useEffect(() => {
+    async function loadInfo() {
+      try {
+        const data = await getData<TagType[]>('/getTags');
+        setTagList(data);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    loadInfo(); // Invoke the function inside the useEffect
+  }, []);
 
+  if (!tagList) {
+    return <div>Tag list not found</div>;
+  }
   return (
     <div>
       <div className="text-3xl flex p-3 items-center">

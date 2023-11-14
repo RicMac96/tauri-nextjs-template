@@ -19,14 +19,14 @@ import capitalizeText from '@/utils/capitalize';
 import { postData, updateData } from '@/utils/dataRequests';
 
 interface Props {
-  windfarmList: WindfarmType[];
+  windfarms: WindfarmType[];
   procedure?: ProcedureType;
   title: string;
   buttonText: string;
   tags: TagType[];
 }
 
-const ProcedureForm = ({ windfarmList, procedure, title, buttonText, tags }: Props) => {
+const ProcedureForm = ({ windfarms, procedure, title, buttonText, tags }: Props) => {
   const router = useRouter();
   const methods = useForm({
     defaultValues: {
@@ -118,7 +118,7 @@ const ProcedureForm = ({ windfarmList, procedure, title, buttonText, tags }: Pro
             label="Windfarms Names - Optional"
             multiple={true}
             type="text"
-            options={windfarmList.map((windfarm, index) => (
+            options={windfarms.map((windfarm, index) => (
               <MenuItem value={windfarm._id?.toString()} key={index}>
                 {capitalizeText(windfarm.Name ?? '')}
               </MenuItem>

@@ -3,7 +3,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import dbConnect from '../../../../lib/dbConnect';
-import Report from '../../../../models/report.model';
+import Procedure from '../../../../models/procedure.model';
 
 export async function POST(req: any) {
   try {
@@ -11,7 +11,10 @@ export async function POST(req: any) {
 
     const id = await req.json();
 
-    const data = await Report.find(id ? { _id: id } : {}).populate('windfarm', 'tags');
+    const data = await Procedure.find(id ? { _id: id } : {}).populate(
+      'windfarm',
+      'tags',
+    );
 
     return Response.json(data);
   } catch (error) {

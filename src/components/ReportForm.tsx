@@ -19,13 +19,13 @@ import { postData, updateData } from '@/utils/dataRequests';
 import { ReportType, WindfarmType } from '../../types/dataType';
 
 interface Props {
-  windfarmList: WindfarmType[];
+  windfarms: WindfarmType[];
   report?: ReportType;
   title: string;
   buttonText: string;
 }
 
-const ReportForm = ({ windfarmList, report, title, buttonText }: Props) => {
+const ReportForm = ({ windfarms, report, title, buttonText }: Props) => {
   const router = useRouter();
   const methods = useForm({
     defaultValues: {
@@ -87,7 +87,7 @@ const ReportForm = ({ windfarmList, report, title, buttonText }: Props) => {
               label="Windfarm Name"
               required={true}
               type="text"
-              options={windfarmList.map((windfarm, index) => (
+              options={windfarms.map((windfarm, index) => (
                 <MenuItem value={windfarm._id?.toString()} key={index}>
                   {capitalizeText(windfarm.Name ?? '')}
                 </MenuItem>

@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
+import Windfarm from 'models/windfarm.model';
+
 import dbConnect from '../../../../lib/dbConnect';
-import Report from '../../../../models/report.model';
 
 export async function POST(req: any) {
   try {
@@ -11,7 +12,7 @@ export async function POST(req: any) {
 
     const id = await req.json();
 
-    const data = await Report.find(id ? { _id: id } : {}).populate('windfarm', 'tags');
+    const data = await Windfarm.find(id ? { _id: id } : {}).sort({ Name: 1 });
 
     return Response.json(data);
   } catch (error) {

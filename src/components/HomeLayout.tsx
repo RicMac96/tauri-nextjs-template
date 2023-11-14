@@ -7,7 +7,7 @@
 import { useEffect, useState } from 'react';
 
 import { useGlobalContext } from '@/utils/context';
-import { getReports } from '@/utils/dataRequests';
+import { getData } from '@/utils/dataRequests';
 import searchWithinObject from '@/utils/searchWithin';
 
 import { ReportType } from '../../types/dataType';
@@ -15,15 +15,13 @@ import ReportMainMenu from './reportMainView';
 
 const HomeLayout = () => {
   const { filter } = useGlobalContext();
-  console.log(filter);
   const [reports, setReports] = useState<ReportType[] | undefined>();
   const [fullList, setFullList] = useState<ReportType[] | undefined>();
 
   useEffect(() => {
     async function fetchReports() {
       try {
-        console.log('Reports updated');
-        const data = await getReports();
+        const data = await getData<ReportType[]>('/getReports');
         setReports(data);
         setFullList(data);
       } catch (error) {
