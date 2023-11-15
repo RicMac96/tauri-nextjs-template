@@ -8,14 +8,20 @@ import Procedure from '../../../../models/procedure.model';
 export async function POST(req: any) {
   try {
     await dbConnect();
-
     const id = await req.json();
+    const data = await Procedure.findById(id).populate(['windfarm', 'tags']); //['windfarm','tags']
+    return Response.json(data);
+  } catch (error) {
+    // Handle errors appropriately, e.g., log the error or send an error response
+    console.error(error);
+    return Response.json({ error: 'An error occurred' }, { status: 500 });
+  }
+}
 
-    const data = await Procedure.find(id ? { _id: id } : {}).populate(
-      'windfarm',
-      'tags',
-    );
-
+export async function GET() {
+  try {
+    await dbConnect();
+    const data = await Procedure.find({}).populate(['windfarm', 'tags']); //['windfarm','tags']
     return Response.json(data);
   } catch (error) {
     // Handle errors appropriately, e.g., log the error or send an error response

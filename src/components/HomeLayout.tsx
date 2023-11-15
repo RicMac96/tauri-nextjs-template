@@ -21,7 +21,7 @@ const HomeLayout = () => {
   useEffect(() => {
     async function fetchReports() {
       try {
-        const data = await getData<ReportType[]>('/getReports');
+        const data = await getData<ReportType[]>('/getReport');
         setReports(data);
         setFullList(data);
       } catch (error) {

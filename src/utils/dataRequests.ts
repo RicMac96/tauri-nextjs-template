@@ -37,7 +37,6 @@ const getItem = async <T>(url: string, id: string): Promise<T> => {
 };
 
 const postData = async <T>(url: string, data: any): Promise<T> => {
-  console.log('postData');
   const response = await fetch(`/api${url}`, {
     method: 'POST',
     headers: {
@@ -49,7 +48,6 @@ const postData = async <T>(url: string, data: any): Promise<T> => {
 };
 
 const deleteItem = async <T>(url: string, data: any): Promise<T> => {
-  console.log('Delete Item');
   const response = await fetch(`/api${url}`, {
     method: 'DELETE',
     headers: {
